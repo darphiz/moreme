@@ -1,8 +1,3 @@
- AOS.init({
- 	duration: 800,
- 	easing: 'slide',
- 	once: true
- });
 
 jQuery(document).ready(function($) {
 
@@ -25,7 +20,7 @@ jQuery(document).ready(function($) {
       $('.site-mobile-menu .has-children').each(function(){
         var $this = $(this);
         
-        $this.prepend('<i class="fa fa-angle-down">');
+        $this.prepend('<span class="arrow-collapse collapsed">');
 
         $this.find('.arrow-collapse').attr({
           'data-toggle' : 'collapse',
