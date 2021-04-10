@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About Moreme Hub{% endblock %}
+{% block description %}All you need to know about the fast rising Moreme Hub {% endblock %}
+{% block descriptionfb %}All you need to know about the fast rising Moreme Hub{% endblock %}
+{% block content %}
+
+    <div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url('{% static "images/lifestyle.webp" %}');">
+      <div class="container">
+        <div class="row same-height justify-content-center">
+          <div class="col-md-12 col-lg-10">
+            <div class="post-entry text-center">
+              <h1 class="mb-4">About Us</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{% static "images/moreme_logo.webp" %}" alt="Image" class="img-fluid">
+          </div>
+          <div class="col-md-5 ml-auto">
+            <h2>About Us</h2>
+            <p class="mb-4">On Moreme Hub, your interest is our priority. Get abreast with our timely news, interesting articles and inspiring stories to keep you glued to the screen. Sign Up now as a member or as a creator if you want to turn your passion for writing to earn some cool cash. You create the content, we give you the audience!</p>
+            <p class="mb-4">We also provide:</p>
+            <ul class="ul-check list-unstyled success">
+              <li>Guides on how to do most things you find difficult</li>
+              <li>Inspiring stories to keep you on your feet all the time</li>
+              <li>Comic relief as "Problem No Dey Finish"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 order-md-2">
+            <img src="{% static 'images/moreme_logo2.png' %}" alt="Image" class="img-fluid rounded">
+          </div>
+          <div class="col-md-5 mr-auto order-md-1">
+            <h2>Create, Share and Earn</h2>
+            <p>Moreme Hub gives you the opportunity to turn your passion for writing to money. Your write, we give you the audience !
+
+              Aside from that, you also get paid for each successfully published article on the hub. What are you waiting for? 
+
+              <a href="{% url 'register' %}">Create an account</a> and start earning.</p>
+              <p>Follow these simple steps:</p>
+            <ul class="ul-check list-unstyled success">
+              <li>Create an account</li>
+              <li>Click on your dashboard (Click on the sidebar button at the top-right side of the page for mobile users)</li>
+              <li>Click on "Become a creator"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-2 justify-content-center">
+          <div class="col-md-5 text-center">
+            <h2>Our Top Channels</h2>
+          </div>
+        </div>
+        <div class="row">
+          {% for user in top_channel %}
+          <div class="col-md-6 col-lg-4 mb-5 text-center">
+            <img style="max-height:180px;" src="{{user.user.profile.image.url}}" alt="Image" class="img-fluid w-50 rounded-circle mb-4">
+            <h2 class="mb-3">{{user.channel_name}}</h2>
+            <p>{{ user.bio }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div id="advert" class="site-section">
+      <div class="container">
+        <div class="row mb-2 justify-content-center">
+          <div class="col-md-10 text-center">
+            <h2>Advertise With Us</h2>
+            <p class="text-justify">Currently, we do not accept ads on our Homepage. However, we place ads on sections like the article-details page, dashboard, explore page, search-result page, about page, people page and writing page for creators. To place ads on any of these pages, contact the admin via <a href = "mailto:mail.moremehub@gmail.com?subject =Moreme_Ads&body = Message"> mail.moremehub@gmail.com </a> or send a WhatsApp message to +2347068533426. The charge on the ads depends on the size of the banner and its duration on the site. We look forward to working with you!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  {% endblock %}

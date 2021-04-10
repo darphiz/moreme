@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}People{% endblock %}
+{% block description %}Find others on Moreme Hub{% endblock %}
+{% block content %}
+
+<div class="py-5">
+    <div class="container">
+      <span class="post-category bg-primary text-white m-0 mb-2">People</span>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="rounded border p-4">
+            <div class="row align-items-stretch">
+                {% for user in users %}
+              <div class="col-md-6 col-lg-4 mb-3 mb-lg-3">
+                <a href="{{user.get_absolute_url}}" class="d-flex post-sm-entry">
+                      {% if user.profile.image %}
+                        <figure class="mr-3 mb-0"><img style="height: 80px; width: 80px;" src="{{user.profile.image.url}}" alt="user image thumbnail" class="rounded-circle"></figure>
+                    {% else %}
+                        <figure class="mr-3 mb-0"><img style="height: 80px; width: 80px;" src="{% static 'images/person_1.jpg' %}" alt="user image thumbnail" class="rounded-circle"></figure>
+                    {% endif %}
+
+                  <div>
+                      {% if user.creatorprofile.channel_name %}
+                    <span class="post-category bg-primary text-white m-0 mb-2">{{user.creatorprofile.channel_name}}</span>
+                        {% else %}
+                    <span class="post-category bg-danger text-white m-0 mb-2">Member</span>
+                        {% endif %}
+                    <h2 class="mb-0">{{user.first_name|title}} {{user.last_name|title}}</h2>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+           <div class="pagination mt-4">
+                <span class="step-links">
+                {% if users.has_previous %}
+                <a class="btn btn-primary rounded" href="?page={{ users.previous_page_number }}">&larr; Previous</a>
+                {% endif %}
+                <span class="current">
+                Page {{ users.number }} of {{ users.paginator.num_pages }}
+                </span>
+                {% if users.has_next %}
+                <a class="btn btn-primary rounded" href="?page={{ users.next_page_number }}">Next &rarr;</a>
+                {% endif %}
+                </span>
+            </div>
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

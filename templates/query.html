@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}
+Search Result for "{{arg}}"
+{% endblock %}
+{% block decription %}Showing Search Results for "{{arg}}" {% endblock %}
+
+
+{% block content %}
+<style>
+  /* Smartphones ----------- */
+@media only screen and (max-width: 760px) {
+  #dev { display: none; }
+}
+</style>
+<div id="dev"></div>
+<div class="py-5">
+    <div class="container">
+      <small><a href="{% url 'articles_list' %}">Home</a> >> {{arg}} </small>
+      </div>
+  <div class="container">
+
+    {% if action == 'search' %}
+    <span class="post-category bg-primary text-white m-0 mb-2">Search results</span>
+    {% endif %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="rounded border p-4">
+          <div class="row align-items-stretch" id="image-list">
+{% include "query_ajax.html" %}
+</div>
+{% if results %}
+<div class="text-center" id="spinner">
+  <i class="fas fa-circle-notch fa-2x fa-spin"></i>
+  <p>Scroll down to load more results...</p>
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block domready %}
+  var page = 1;
+  var empty_page = false;
+  var block_request = false;
+  var is_mobile = false;
+
+  if( $('#dev').css('display')=='none') {
+      is_mobile = true;
+  }
+  $(window).scroll(function() {
+    if(is_mobile){
+    var margin = $(document).height() - $(window).height() - 800;}
+    else{
+      var margin = $(document).height() - $(window).height() - 300;}
+  if ($(window).scrollTop() > margin && empty_page == false &&block_request == false) {
+    block_request = true;
+    page += 1;
+    $.get('?page=' + page, function(data) {
+      if(data == '') {
+        empty_page = true;
+        $('#spinner').css('display','none');
+        }
+  else {
+    block_request = false;
+    $('#image-list').append(data);
+    }
+  });
+  }
+  });
+{% endblock %}

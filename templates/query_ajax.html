@@ -1,0 +1,40 @@
+{% load class_name %}
+
+      
+        
+           
+                {% for result in results %}
+                {% with result|class_name as klass %}
+                {% if klass == 'Article' %}
+              <div class="col-md-6 col-lg-4 mb-3 mb-lg-3">
+                <a href="{{result.get_absolute_url}}" class="d-flex post-sm-entry">      
+                  <figure class="mr-3 mb-0"><img style="height: 80px; width: 80px;" src="{{result.image_upload.url}}" alt="Article thumbnail" class="rounded"></figure>
+                  <div>
+                    <h2 class="mb-0">{{result.title|title}}</h2>
+                    <p class="mb-0">{{result.publish}}</p>
+                    <p class="mb-0">{{result.author.creatorprofile.channel_name}}</p>
+                  </div>
+                </a>
+              </div>
+              {% elif klass == 'CreatorProfile' %}
+              <div class="col-md-6 col-lg-4 mb-3 mb-lg-3">
+                <a href="{{result.user.get_absolute_url}}" class="d-flex post-sm-entry">      
+                  <figure class="mr-3 mb-0"><img style="height: 80px; width: 80px;" src="{{result.user.profile.image.url}}" alt="Article thumbnail" class="rounded-circle"></figure>
+                  <div>
+                    <h2 class="mb-0">{{result.user.first_name|title}} {{result.user.last_name|title}}</h2>
+                    <p class="mb-0">{{result.bio}}</p>
+                    <span class="post-category text-white bg-success mb-3">{{result.channel_name}}</span>
+                    
+                  </div>
+                </a>
+              </div>
+              {% endif %}
+              {% endwith %}
+              {% empty %}
+            <div class="container">
+                <p class="text-center">No article in this category...</p>
+            </div>
+              {% endfor %}
+      
+         
+   

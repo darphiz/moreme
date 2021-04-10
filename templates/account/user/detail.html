@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{% if user.creatorprofile %}{{user.creatorprofile.channel_name}}{% else %}{{ user.first_name }} {{ user.last_name}}{% endif %}{% endblock %}
+{% block decription %}Details and articles written by {{ user.first_name }} {{ user.last_name}} {% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row my-3 ">
+
+    <div class="col-lg-4 bio text-center">
+      <img style="height: 100px; width: 100px; " src="{{user.profile.image.url}}" alt="Authors Image" class="image-fluid mb-2">
+      <div class="bio-body">
+        <h2>{{ user.creatorprofile.channel_name }}</h2>
+        <p class="mb-4">{{ user.creatorprofile.bio }}</p>
+        <p class="mb-4">{{ user.first_name }} {{ user.last_name}}</p>
+        {% with total_followers=user.followers.count %}
+        <span class="count">
+            <span class="total">{{ total_followers }}</span> Follower{{ total_followers|pluralize }}
+        </span>
+        <a href="." class="follow btn btn-primary btn-sm rounded px-4 py-2" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+            {% if request.user not in user.followers.all %}
+            Follow
+            {% else %}
+            Unfollow
+            {% endif %} Me
+            </a>
+           {% endwith %}
+      </div>
+    </div>
+
+    <div class="col-lg-8 ">
+        <div>
+            {% with article=articles.count %}
+            <h3 class="custom text-primary my-2 btn">Recent Post{{article|pluralize}}</h3>
+            {% endwith %}
+            {% for article in articles %}
+            {% if article.revise == True %}
+            <a href="{% url 'edit_article' article.id %}">
+            {% else %}
+           <a href="{{article.get_absolute_url}}">
+               {% endif %}
+               <div class="articles card p-1">
+                <div class="media">
+                    <div class="image media-left "><img style='width: 80px; height: 60px;' src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object" ></div>
+                    <div class="container">
+                        <h6 style="color: black;">{{ article.title}}</h6>
+                    </div> 
+                </div>
+                <div class="container-fluid  impressions">
+                    <div class="row p-1 container-fluid ">
+                        {% if article.status == 'published' %}
+                        <div class="col-lg-6 col-sm-6 col-6 text-secondary "><h6 class="text-secondary  small">{{article.get_comments}} comment{{article.get_comments|pluralize}}</h6></div>
+                        <div class="col-lg-6 col-sm-6 col-6  text-secondary "><h6 class="text-secondary  small">{{article.users_like.count}} like{{article.users_like.count|pluralize}}</h6></div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+             </div></a>
+             {% empty %}
+             <div class="container p-4 rounded border">
+              <p class="text-secondary text-center"> Nothing Here :( </p>
+             </div>
+             {% endfor %}        
+      </div>
+    </div>
+</div>
+  </div>
+{% endblock %}
+
+
+
+
+
+
+
+<!--AJax-->
+{% block domready %}
+$('a.follow').click(function(e){
+    e.preventDefault();
+    $.post('{% url "user_follow" %}',
+        {
+            id: $(this).data('id'),
+            action: $(this).data('action')
+        },
+        function(data){
+            if (data['status'] == 'ok') {
+                var previous_action = $('a.follow').data('action');
+                // toggle data-action
+            $('a.follow').data('action',
+               previous_action == 'follow' ? 'unfollow' : 'follow');
+                // toggle link text
+            $('a.follow').text(
+                previous_action == 'follow' ? 'Unfollow' : 'Follow');
+                    // update total followers
+                var previous_followers = parseInt(
+                $('span.count .total').text());
+                $('span.count .total').text(previous_action == 'follow' ?
+            previous_followers + 1 : previous_followers - 1);
+            }
+        }
+    );
+});
+{% endblock %}

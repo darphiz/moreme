@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Moreme Hub | Recommended For You{% endblock %}
+{% block description %}On Moreme Hub, your interest is our priority. Get abreast with timely news, interesting articles and inspiring stories to keep you glued to your screen. Sign Up now{% endblock %}
+{% block titletw %}Moreme Hub{% endblock %}
+{% block titlefb %}Moreme Hub{% endblock %}
+{% block descriptionfb %}On Moreme Hub, your interest is our priority. Get abreast with timely news, interesting articles and inspiring stories to keep you glued to your screen{%endblock%}
+{% block thumb %}{% static 'images/moreme_logo.png' %}{% endblock %}
+{% block thumb1 %}{% static 'images/moreme_logo.png' %}{% endblock %}
+
+{% block content %}
+ {% load thumbnail %}
+
+<!--Header-->
+<div class="hero-image">
+<div class="hero-text">
+  <h1>Follow Your Interests...</h1>
+  <p>Read, Write and Share articles on the topics you like </p>
+</div>
+</div>
+
+
+    <!--Editors Pick-->
+    <div class="py-2">
+      {% if editors_pick %}
+      <div class="container">
+        <span class="post-category bg-danger text-white m-0 mb-2">editors pick</span>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="rounded border p-4">
+              <div class="row align-items-stretch">
+                {% for article in editors_pick|slice:":3" %}
+                <div class="col-md-6 col-lg-4 mb-3 mb-lg-3">
+                  <a href="{{article.get_absolute_url}}" class="d-flex post-sm-entry">
+                    {% thumbnail article.image_upload "80x80" crop="center" format="WEBP" as im %}
+                      <figure class="mr-3 mb-0"><img src="{{im.url}}" alt="Editor's pick {{article.id}} Thumbnail" class="rounded" height="{{im.height}}" width="{{im.width}}"></figure>
+                    {% endthumbnail %}
+                    <div>
+                      <h2 class="mb-0">{{article.title|title}}</h2>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+
+        <div class="row align-items-stretch retro-layout">
+
+          <div class="col-md-5">
+            <a href="{% url 'query' action='category' arg='Gaming' %}" class="hentry img-1 h-100 gradient" style="background-image: url('{% static "images/gaming.webp" %}');">
+              <span class="post-category text-white bg-danger">Gaming</span>
+              <div class="text">
+                <h2>Explore Articles On Gaming</h2>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-7">
+
+            <a href="{% url 'query' action='explore' arg='explore' %}" class="hentry img-2 v-height mb30 gradient" style="background-image: url('{% static "images/moreme_logo.webp" %}');">
+              <span class="post-category text-white bg-success">Moreme Hub</span>
+              <div class="text text-sm">
+                <h2>View HOT articles on Moreme Hub</h2>
+              </div>
+            </a>
+
+            <div class="two-col d-block d-md-flex">
+              <a href="{% url 'query' action='category' arg='Technology' %}" class="hentry v-height img-2 gradient" style="background-image: url('{% static "images/developer.webp" %}');">
+                <span class="post-category text-white bg-primary">Web Development</span>
+                <div class="text text-sm">
+                  <h2>Explore Articles On Web Development</h2>
+                </div>
+              </a>
+              <a href="{% url 'query' action='category' arg='Lifestyle' %}" class="hentry v-height img-2 ml-auto gradient" style="background-image: url('{% static "images/lifestyle.webp" %}');">
+                <span class="post-category text-white bg-warning">Lifestyle</span>
+                <div class="text text-sm">
+                  <h2>Explore Articles On Lifestyle </h2>
+                </div>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-2">
+          <div class="col-12 section-heading"><h2>Recommended For You</h1></div>
+        </div>
+        <div class="row">
+          {% for article in for_you %}
+          {% if forloop.first %}
+          <div class="col-lg-6 mb-2 mb-lg-0 ">
+            <div class="entry2 m-1 border p-4 rounded">
+              <a href="{{article.get_absolute_url}}">
+                {% thumbnail article.image_upload "500x500" crop="center" format="WEBP" as im %}
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="Recommended article {{article.id}} Image" class="img-fluid rounded">
+                {% endthumbnail %}
+              </a>
+              <span class="post-category text-white {{article.category.color_code}} mb-3">{{article.category}}</span>
+              <h2><a href="{{article.get_absolute_url}}">{{article.title|title}}</a></h2>
+              <div class="post-meta align-items-center text-left clearfix">
+                {% thumbnail article.author.profile.image "30x30" crop="center" format="WEBP" as im %}
+                <figure class="author-figure mb-0 mr-3 float-left"><img src="{{im.url}}" alt="author {{article.author.id}}" height="{{im.height}}" width="{{im.width}}" class="img-fluid"></figure>
+                {% endthumbnail %}
+                <span class="d-inline-block mt-1">By <a href="{{article.author.get_absolute_url}}">{{article.author}}</a></span>
+                <span>&nbsp;-&nbsp; {{article.publish}}</span>
+              </div>
+              <div class="post-pre">
+              <p> {{ article.body|safe|truncatewords:30}}<a class="text-blue" href="{{article.get_absolute_url}}">[Continue reading]</a></p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-6 pl-lg-4">
+            {% else %}
+            <!--Suggested Articles loop -->
+
+            <div class="entry3 d-block d-sm-flex border p-4 rounded">
+              <figure class="figure order-2"><a href="{{ article.get_absolute_url}}">
+                {% thumbnail article.image_upload "300x300" crop="center" format="WEBP" as im %}
+                <img src="{{im.url}}"alt="suggested article {{article.id}} thumbnail" width="{{ im.width }}" height="{{ im.height }}" class="img-fluid rounded"></a>
+                {% endthumbnail %}
+              </figure>
+              <div class="text mr-4 order-1">
+                <span class="post-category text-white {{article.category.color_code}}  mb-3">{{ article.category }}</span>
+                <h2><a href="{{ article.get_absolute_url }}">{{ article.title|title }}</a></h2>
+                <span class="post-meta mb-3 d-block">{{ article.publish }}</span>
+              </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+            <!--End suggested Articles-->
+
+          </div>
+                  </div>
+      </div>
+    </div>
+
+        <div class="site-section">
+      <div class="container">
+        <div class="row mb-2">
+          <div class="col-12 section-heading"><h2>Trending</h2></div>
+        </div>
+        <div class="row">
+          {% for article in recommended|slice:":5" %}
+          {% if forloop.first %}
+          <div class="col-lg-6 mb-5 mb-lg-0 ">
+            <div class="entry2 m-1 border p-4 rounded">
+              <a href="{{article.get_absolute_url}}">
+                {% thumbnail article.image_upload "500x500" crop="center" format="WEBP" as im %}
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="Recommended article {{article.id}} Image" class="img-fluid rounded">
+                {% endthumbnail %}
+              </a>
+              <span class="post-category text-white {{article.category.color_code}} mb-3">{{article.category}}</span>
+              <h2><a href="{{article.get_absolute_url}}">{{article.title|title}}</a></h2>
+              <div class="post-meta align-items-center text-left clearfix">
+                {% thumbnail article.author.profile.image "30x30" crop="center" format="WEBP" as im %}
+                <figure class="author-figure mb-0 mr-3 float-left"><img src="{{im.url}}" alt="author {{article.author.id}}" height="{{im.height}}" width="{{im.width}}" class="img-fluid"></figure>
+                {% endthumbnail %}
+                <span class="d-inline-block mt-1">By <a href="{{article.author.get_absolute_url}}">{{article.author}}</a></span>
+                <span>&nbsp;-&nbsp; {{article.publish}}</span>
+              </div>
+              <div class="post-pre">
+              <p> {{ article.body|safe|truncatewords:30}}<a class="text-blue" href="{{article.get_absolute_url}}">[Continue reading]</a></p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-6 pl-lg-4">
+            {% else %}
+            <!--Suggested Articles loop -->
+
+            <div class="entry3 d-block d-sm-flex border p-4 rounded">
+              <figure class="figure order-2"><a href="{{ article.get_absolute_url}}">
+                {% thumbnail article.image_upload "300x300" crop="center" format="WEBP" as im %}
+                <img src="{{im.url}}"alt="suggested article {{article.id}} thumbnail" width="{{ im.width }}" height="{{ im.height }}" class="img-fluid rounded"></a>
+                {% endthumbnail %}
+              </figure>
+              <div class="text mr-4 order-1">
+                <span class="post-category text-white {{article.category.color_code}}  mb-3">{{ article.category }}</span>
+                <h2><a href="{{ article.get_absolute_url }}">{{ article.title|title }}</a></h2>
+                <span class="post-meta mb-3 d-block">{{ article.publish }}</span>
+              </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+            <!--End suggested Articles-->
+
+          </div>
+                  </div>
+      </div>
+    </div>
+
+    
+    <div class="container my-1 text-center">
+      <a href="{% url 'query' action='explore' arg='explore' %}" class="btn rounded mb-3 btn-primary">View More Articles</a>
+    </div>
+{% endblock %}
