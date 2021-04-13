@@ -250,3 +250,20 @@ class Subscriber(models.Model):
 
     def __str__(self):
         return self.email
+
+class AdsManager(models.Manager):
+    def get_queryset(self):
+        return super(AdsManager, self).get_queryset()\
+            .filter(active=True)
+
+class Advertise(models.Model):
+    category = models.ForeignKey(Category,on_delete=models.CASCADE, related_name='categories', blank=True, null=True)
+    ad_image = models.ImageField(upload_to="ads")
+    link = models.URLField()
+    desc = models.CharField(max_length=250)
+    active = models.BooleanField(default = False)
+    objects = models.Manager()  # The default manager.
+    is_active = AdsManager()
+
+    def __str__(self):
+        return self.desc

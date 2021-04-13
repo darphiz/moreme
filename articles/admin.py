@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, Category, Comment, View, Subscriber
+from .models import Advertise, Article, Category, Comment, View, Subscriber
 # Register your models here.
 
 
@@ -68,3 +68,7 @@ class ViewAdmin(admin.ModelAdmin):
 @admin.register(Subscriber)
 class SusAdmin(admin.ModelAdmin):
     search_fields = ('email',)
+
+@admin.register(Advertise)
+class AdsAdmin(admin.ModelAdmin):
+    search_fields = ('url','desc')

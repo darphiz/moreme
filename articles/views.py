@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
-from .models import Article, Category, Subscriber
+from .models import Article, Category, Subscriber, Advertise
 from news_recommendation.utils import record_interest, get_user_interest, rec_news, rec_top_news, rec_editors_pick, rec_user_cat
 from news_recommendation.models import Visit
 from tagging.models import Tag
@@ -81,9 +81,15 @@ def articles_list(request):
     return render(request, 'index.html', context)
 
 
+def rec_ad(cat):
+    ads =Advertise.is_active.filter(category=cat).order_by('?')[:1]
+    if not ads:
+        ads = Advertise.is_active.order_by('?')[:1]
+    return ads
 def article_detail(request, slug, pk):
     ajax_here = True
     article = get_object_or_404(Article, slug=slug, id=pk)
+    ads = rec_ad(article.category)
     try:
         already_visited = Visit.objects.get(
             user=request.user).article_visited.all()
@@ -115,7 +121,7 @@ def article_detail(request, slug, pk):
     else:
         comment_form = CommentForm()
     return render(request, 'detail.html', {'article': article, 'ajax_here': ajax_here, 'tags': tags, 'cat': cat, 'comments': comments,
-                                           'new_comment': new_comment, 'comment_form': comment_form, 'similar_posts': similar_posts})
+                                           'new_comment': new_comment, 'comment_form': comment_form, 'similar_posts': similar_posts,'ads': ads,})
 
 
 @ login_required
