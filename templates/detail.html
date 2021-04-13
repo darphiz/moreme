@@ -51,7 +51,7 @@
                     <small><a href="{% url 'articles_list' %}">Home</a> >> {{article.title|title}} </small>
                 </div>
                 <div class="text-justify text-left text-black  article">
-                {{ article.body|safe|linebreaks }}
+                {{ article.body|safe|linebreaks}}
               </div>
 
             </div>
@@ -66,10 +66,10 @@
             </div>
             <div class="container">
               Share:
-              <a class="mx-1 bg-primary text-white border border-primary p-3 rounded" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
+              <a class="mx-1 bg-primary text-white border border-primary p-2 rounded" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
                 <span class="icon-facebook "></span></a>
               <a  class="mx-1 bg-success text-white border border-success p-2 rounded" href="whatsapp://send?text={{request.build_absolute_uri}}" data-action="share/whatsapp/share"><span class="icon-whatsapp "></span></a>
-              <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="Darmola_afeez_" data-hashtags="moremehub" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a class="mx-1 bg-primary text-white border border-primary p-2 rounded" href="http://twitter.com/home?status={{article.title}}&url={{request.build_absolute_uri}}" target="_blank"><span class="icon-twitter "></span></a>
             </div>
 
 
@@ -99,7 +99,7 @@
                     {% if comment.user.profile.image %}
                     <img src="{{comment.user.profile.image.url}}" alt="User Image">
                     {% else %}
-                    <img src="{% static 'images/avatar.webp' %}" alt="User Image">
+                    <img height="50px" width="50px" src="{% static 'images/avatar.webp' %}" alt="User Image">
                     {% endif %}
                   </div>
                   <div class="comment-body">
@@ -188,8 +188,8 @@
                   {% for article in similar_posts %}
                   <li>
                     <a href="{{article.get_absolute_url}}">
-                      {% thumbnail article.image_upload "120x120" crop="center" format="WEBP" as im %}
-                      <img src="{{im.url}}" alt="Similar article thumbnail {{article.id}}" class="mr-4 rounded">
+                      {% thumbnail article.image_upload "120x100" crop="center" format="WEBP" as im %}
+                      <img height="{{im.height}}" width="{{im.width}}"  src="{{im.url}}" alt="Similar article thumbnail {{article.id}}" class="mr-4 rounded">
                       {% endthumbnail %}
                       <div class="text">
                         <h4>{{article.title|title}}</h4>

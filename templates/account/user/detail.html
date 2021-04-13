@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
+{% load thumbnail %}
 {% block title %}{% if user.creatorprofile %}{{user.creatorprofile.channel_name}}{% else %}{{ user.first_name }} {{ user.last_name}}{% endif %}{% endblock %}
 {% block decription %}Details and articles written by {{ user.first_name }} {{ user.last_name}} {% endblock %}
 {% block content %}
 
+<div class="m-fix">
 <div class="container-fluid">
     <div class="row my-3 ">
 
     <div class="col-lg-4 bio text-center">
-      <img style="height: 100px; width: 100px; " src="{{user.profile.image.url}}" alt="Authors Image" class="image-fluid mb-2">
+         {% thumbnail user.profile.image "100x100" crop="center" format="WEBP" as im %}
+      <img height="{{im.height}}" width="{{im.width}}" src="{{im.url}}" alt="Authors Image" class="image-fluid mb-2">
+      {% endthumbnail %}
       <div class="bio-body">
         <h2>{{ user.creatorprofile.channel_name }}</h2>
         <p class="mb-4">{{ user.creatorprofile.bio }}</p>
@@ -41,10 +45,14 @@
                {% endif %}
                <div class="articles card p-1">
                 <div class="media">
-                    <div class="image media-left "><img style='width: 80px; height: 60px;' src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object" ></div>
+                    <div class="image media-left ">
+                        {% thumbnail article.image_upload "80x60" crop="center" format="WEBP" as im %}
+                        <img height="{{im.height}}" width="{{im.width}}" src="{{im.url}}" alt="{{article.title}}" class="media-object" >
+                        {% endthumbnail %}
+                    </div>
                     <div class="container">
                         <h6 style="color: black;">{{ article.title}}</h6>
-                    </div> 
+                    </div>
                 </div>
                 <div class="container-fluid  impressions">
                     <div class="row p-1 container-fluid ">
@@ -54,16 +62,17 @@
                         {% endif %}
                     </div>
                 </div>
-                
+
              </div></a>
              {% empty %}
              <div class="container p-4 rounded border">
               <p class="text-secondary text-center"> Nothing Here :( </p>
              </div>
-             {% endfor %}        
+             {% endfor %}
       </div>
     </div>
 </div>
+  </div>
   </div>
 {% endblock %}
 

@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}500-Page Not Found{% endblock %}
+{% block title %}500-Server Error{% endblock %}
 {% block description %}All you need to know about the fast rising Moreme Hub {% endblock %}
 {% block descriptionfb %}All you need to know about the fast rising Moreme Hub{% endblock %}
 {% block content %}
-<h1>500 Error </h1>
+<div class="container error-container">
+
+    <div class="mt-5 text-center">
+    <h1 class="display-1 font-weight-bold ">Error 500!</h1>
+    </div>
+    <div class="mt-5 text-center">
+        <h3>Give us some time, Our developers are trying.....</h3>
+        <p>Check if you can still access our <a href="{% url 'articles_list' %}">homepage</a></p>
+
+    </div>
+
+</div>
 {% endblock %}

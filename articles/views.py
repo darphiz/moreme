@@ -15,7 +15,6 @@ from account.models import CreatorProfile
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, \
     PageNotAnInteger
-from django.shortcuts import render_to_response
 from django.template import RequestContext
 # Create your views here.
 
@@ -252,13 +251,12 @@ def privacy_policy(request):
     return render(request, 'privacy.html',)
 
 def handler404(request, exception, template_name="404.html"):
-    response = render_to_response(template_name)
+    response = render(request,template_name,)
     response.status_code = 404
     return response
 
 
 def handler500(request, *args, **argv):
-    response = render_to_response('500.html', {},
-                                  context_instance=RequestContext(request))
+    response = render(request,'500.html', {},)
     response.status_code = 500
     return response
