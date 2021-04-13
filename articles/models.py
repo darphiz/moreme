@@ -148,8 +148,7 @@ class Article(models.Model):
         'youtube',
         '/static/vendor/ckeditor_plugins/youtube/',
         'plugin.js',
-    )],
-    )
+        ),('wordcount','/static/vendor/ckeditor_plugins/wordcount/','plugin.js',),('notification','/static/vendor/ckeditor_plugins/notification/','plugin.js'),])
     tag = TagField()
     image_upload = models.ImageField(upload_to="pics")
     category = models.ForeignKey(

@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9kumj=)%-i6z6lw#e0wgp@sc%y=nyu)#hm14n)gyi=x38$4l#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['www.moremehub.com', 'moremehub.com']
 #ALLOWED_HOSTS = ['*']
@@ -62,6 +62,7 @@ CKEDITOR_CONFIGS = {
         'contentsCss': 'img {max-width: 100%;height: auto !important;}',
         'toolbar_Special': [
             ['Bold', 'Youtube', 'Image'],
+            ['Wordcount', 'Notification'],
             ['Link', 'Unlink', 'Anchor'],
             ['Undo', 'Redo', ], ['Styles', 'Format',
                                  'Italic', 'Underline', 'SpellChecker'],
@@ -71,7 +72,7 @@ CKEDITOR_CONFIGS = {
                                                  'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight']
 
         ],
-        'extraPlugins': ','.join(['youtube', 'image2', ]), 'allowedContent': True, 'removePlugins': 'iframe',
+        'extraPlugins': ','.join(['youtube', 'image2','wordcount','notification' ]), 'allowedContent': True, 'removePlugins': 'iframe',
 
     }
 }
