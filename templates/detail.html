@@ -18,6 +18,7 @@
 
 {% block content %}
 
+
    {% thumbnail article.image_upload "500x500" crop="center" format="WEBP" as im %}
     <div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url('{{im.url}}');">
   {% endthumbnail %}
@@ -47,8 +48,8 @@
           <div class="col-md-12 col-lg-8 main-content">
 
             <div class="post-content-body">
-                <div>
-                    <small><a href="{% url 'articles_list' %}">Home</a> >> {{article.title|title}} </small>
+            <div>
+                    <small><a href="{% url 'articles_list' %}">Home</a>|{{article.title|title}} </small>
                 </div>
                 <div class="text-justify text-left text-black  article">
                 {{ article.body|safe|linebreaks}}

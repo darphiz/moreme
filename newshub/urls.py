@@ -23,6 +23,7 @@ from ckeditor_uploader import views as ckeditor_views
 from django.contrib.sitemaps.views import sitemap
 from articles.sitemaps import ArticleSitemap
 from django.conf.urls import handler404, handler500
+
 sitemaps = {
     'articles': ArticleSitemap,
 }
@@ -36,7 +37,9 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('news_recommendation/', include('news_recommendation.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
-         name='django.contrib.sitemaps.views.sitemap')
+         name='django.contrib.sitemaps.views.sitemap'),
+
+
 ]
 urlpatterns = urlpatterns + \
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

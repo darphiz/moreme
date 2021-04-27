@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load class_name %}
 {% block title %}Dashboard | {{ request.user.username|title}}'s Profile{% endblock %}
 {% block decription %}View detais about yourself{% endblock %}
 {% block content %}
@@ -11,7 +11,7 @@
        <!--Nav-->
         <div class="col-lg-3 lf-col  nopadding">
             <div class= "dash-nav" >
-                <a href="{% url 'articles_list' %}" class="dash-nav-items">Home</a>
+                <a href="{% url 'dashboard' 'landing' %}" class="dash-nav-items">Home</a>
                 {% if request.user.creatorprofile.is_approved %}
                 <a href="{% url 'create_article' %}" class="dash-nav-items">Create</a>
                 {% else%}
@@ -20,7 +20,7 @@
                 <a href="{% url 'dashboard' 'library' %}" class="dash-nav-items {% if library %}selected{% endif %}">Content Library
                      <span class="float-right bg-primary post-category text-white mb-2">{{articles.count}}</span>
                 </a>
-                <a href="{% url 'dashboard' 'money' %}" class="dash-nav-items {% if money %}selected{% endif %}">Monetization(Payment Instruction)</a>
+                <a href="{% url 'dashboard' 'money' %}" class="dash-nav-items {% if money %}selected{% endif %}">Monetization</a>
                 <a href="{% url 'dashboard' 'account' %}" class="dash-nav-items {% if account %}selected{% endif %}">Account</a>
                 <a href="{% url 'dashboard' 'editorial' %}" class="dash-nav-items {% if editorial %}selected{% endif %}">Editorial</a>
                 <a href="{% url 'dashboard' 'activity' %}" class="dash-nav-items {% if activity %}selected{% endif %}">Activity</a>
@@ -150,13 +150,41 @@
         {% endif %}
 
 <!--====================[ MONETIZATION ]==================================================================================================================-->
-{% if money %}
-    <div class="p-4 m-4 rounded border">
-    <p class="text-secondary text-center">Features are being developed...</p>
-    <p>However, payment are made at the end of the month per total articles published.</p>
-    <p>MoremeHub pays N250.00 per article successfully published to your registered bank account.</p>
-    </div>
-{% endif %}
+ {% if money %}
+        <div class="p-4 m-4 rounded border">
+            <h3 class="text-center">Your Generated Revenue This Month</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">PPA Revenue<p>N {{ppa_revenue}}</p>
+                        </th>
+                        <th scope="col">PPC Revenue<p>N {{ppc_revenue}}</p>
+                        </th>
+                        <th scope="col">Total Revenue<p>N {{total_revenue}}</p>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <h3>List Of Monetized articles</h3>
+            <table class="table">
+                <tbody>
+                    {% for article in month_articles %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{article.title}}</td>
+                        <td>{% if article.article_type == 'ppa' %}N500{% else %}N{{article.get_clicks|mul:0.06}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <p>You have not published any article this month. Stats will appear here as soon as you start
+                        publishing!</p>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
 <!--====================[ ACCOUNT ]==================================================================================================================-->
 {% if account %}
 <div class="container">

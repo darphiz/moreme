@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9kumj=)%-i6z6lw#e0wgp@sc%y=nyu)#hm14n)gyi=x38$4l#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =False
 
 ALLOWED_HOSTS = ['www.moremehub.com', 'moremehub.com']
 #ALLOWED_HOSTS = ['*']

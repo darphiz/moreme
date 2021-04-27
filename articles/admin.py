@@ -71,4 +71,4 @@ class SusAdmin(admin.ModelAdmin):
 
 @admin.register(Advertise)
 class AdsAdmin(admin.ModelAdmin):
-    search_fields = ('url','desc')
+    search_fields = ('link','desc')

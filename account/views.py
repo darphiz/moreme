@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 from common.decorators import ajax_required
 from .models import Contact, CreatorProfile
 from articles.models import Article
+from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 ########################################
@@ -188,7 +189,18 @@ def dashboard(request, action):
         context = {'articles': articles, 'library': library}
     if action == 'money':
         money = True
-        context = {'articles': articles, 'money': money}
+        y = []
+        month_articles = acl.filter(created__gte=timezone.now().replace(
+            day=1, hour=0, minute=0, second=0, microsecond=0))
+        ppc_articles = month_articles.filter(article_type='ppc')
+        for article in ppc_articles:
+            x = article.get_clicks()
+            y.append(x)
+        ppc_revenue = float(sum(y) * 0.06)
+        ppa_revenue = month_articles.filter(article_type='ppa').count() * 500
+        total_revenue = ppc_revenue + ppa_revenue
+        context = {'articles': articles, 'money': money,
+                   'month_articles': month_articles, 'ppa_revenue': ppa_revenue, 'ppc_revenue': ppc_revenue, 'total_revenue': total_revenue}
     if action == 'account':
         account = True
         context = {'articles': articles, 'account': account}

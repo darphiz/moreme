@@ -16,8 +16,17 @@ from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, \
     PageNotAnInteger
 from django.template import RequestContext
-# Create your views here.
+from django.http import HttpResponse
+from django.views import View
 
+
+##ads##
+
+
+class AdsView(View):
+    def get(self, request, *args, **kwargs):
+        line  =  "google.com, pub-8164139980360647, DIRECT, f08c47fec0942fa0"
+        return HttpResponse(line)
 
 def articles_list(request):
     # At first Load all active articles

@@ -11,5 +11,6 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('privacy-policy/', views.privacy_policy, name="privacy-policy"),
     path('track_user/', views.track_user, name="track"),
+    path('ads.txt', views.AdsView.as_view()),
 
 ]
