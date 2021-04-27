@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from news_recommendation.models import interest
 from articles.models import Category
-
+from django.core.mail import send_mail, BadHeaderError, EmailMessage
+from django.conf import settings
+from django.http import HttpResponse
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class AccountManager(models.Manager):
     def get_queryset(self):
@@ -76,3 +79,39 @@ class Contact(models.Model):
 
 User.add_to_class('following', models.ManyToManyField(
     'self', through=Contact, related_name='followers', symmetrical=False))
+
+
+class BulkMail(models.Model):
+    MAIL_TYPE= (
+        ('tcc','To All Creators'),
+        ('tam','To All Members')
+    )
+    subject = models.CharField(max_length=150, default="Moreme Hub")
+    message = RichTextUploadingField(config_name='default', blank=True, null =True)
+    type = models.CharField(max_length=10, null=True, blank=True,
+                                    choices=MAIL_TYPE, default=MAIL_TYPE[0][0])
+    already_sent = models.BooleanField(default=False)
+
+    def save(self,*args, **kwargs):
+        subject = self.subject
+        message = self.message
+        if self.type == 'tam':
+            x = []
+            for use in User.objects.all():
+                mail = use.email
+                x.append(mail)
+        else:
+            x = []
+            for use in CreatorProfile.objects.all():
+                mail = use.user.email
+                x.append(mail)
+        recipient = x
+        if not self.already_sent == True:
+            try:
+                msg = EmailMessage(subject, message, settings.EMAIL_HOST_USER, recipient)
+                msg.content_subtype = "html"
+                msg.send()
+                self.already_sent = True
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')    
+        super(BulkMail, self).save(*args, **kwargs)

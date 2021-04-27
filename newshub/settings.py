@@ -25,10 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9kumj=)%-i6z6lw#e0wgp@sc%y=nyu)#hm14n)gyi=x38$4l#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =False
+DEBUG = True
 
-#ALLOWED_HOSTS = ['www.moremehub.com', 'moremehub.com']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['www.moremehub.com', 'moremehub.com']
+#ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
 # Application definition
@@ -54,6 +54,22 @@ INSTALLED_APPS = [
 
 CKEDITOR_UPLOAD_PATH = 'post_images/'
 CKEDITOR_CONFIGS = {
+    'default':{
+        'toolbar': 'Custom',
+        'height': '600px',
+        'width': '100%',
+         'contentsCss': 'img {max-width: 100%;height: auto !important;}',
+         'toolbar_Custom': [
+            ['Bold', 'Image'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Undo', 'Redo', ], ['Styles', 'Format',
+                                 'Italic', 'Underline', 'SpellChecker'],
+            ['Flash', 'Table', 'HorizontalRule', ],
+            ['Smiley', 'SpecialChar'],
+            ['BGColor', 'TextColor', 'Source'], ['NumberedList', 'BulletedList',
+                                                 'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight'] 
+                                                 ],
+    },
     'special': {
         'toolbar': 'Special',
         'height': '600px',
@@ -72,7 +88,7 @@ CKEDITOR_CONFIGS = {
                                                  'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight']
 
         ],
-        'extraPlugins': ','.join(['youtube', 'image2','wordcount','notification' ]), 'allowedContent': True, 'removePlugins': 'iframe',
+        'extraPlugins': ','.join(['youtube', 'image2', 'wordcount', 'notification']), 'allowedContent': True, 'removePlugins': 'iframe',
 
     }
 }
@@ -112,7 +128,7 @@ WSGI_APPLICATION = 'newshub.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -131,7 +147,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+"""
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -189,3 +205,10 @@ ABSOLUTE_URL_OVERRIDES = {
 }
 
 LOGIN_URL = 'login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''

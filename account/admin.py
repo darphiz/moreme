@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, CreatorProfile
+from .models import Profile, CreatorProfile, BulkMail
 
 
 def approve_selected(modeladmin, request, queryset):
@@ -46,7 +46,9 @@ class CreatorProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'channel_name', 'is_approved', 'banned')
     list_filter = ('is_approved', 'banned')
     actions = [approve_selected, remove_approval, ban_selected, lift_ban]
+class BulkMailAdmin(admin.ModelAdmin):
+    list_display = ('subject',)
 
-
+admin.site.register(BulkMail, BulkMailAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(CreatorProfile, CreatorProfileAdmin)
