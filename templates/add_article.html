@@ -1,25 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{% if form.revise.value == True %}Revise And Resubmit {% else %}Create New Article {% endif %}{% endblock %}
-{% block description %}{% if form.revise.value == True %}Edit{% else %}Create{% endif %} your article, share to our audience and smile at your bank{% endblock %}
+{% block title %}{% if form.revise.value == True %}Revise And Resubmit {% else %}Create New Article {% endif %}{%
+endblock %}
+{% block description %}{% if form.revise.value == True %}Edit{% else %}Create{% endif %} your article, share to our
+audience and smile at your bank{% endblock %}
 {% block content %}
 <style>
-    .img-preview{
+    .img-preview {
         height: 200px;
         width: 260px;
         background: #fff;
         overflow: hidden;
 
     }
-    .img-preview img{
+
+    .img-preview img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
-    .custom-file input[type='file']{
+
+    .custom-file input[type='file'] {
         display: none;
     }
-    .custom-file label{
+
+    .custom-file label {
         cursor: pointer;
         color: #000;
         margin: auto;
@@ -28,20 +33,22 @@
 </style>
 
 <div class="container border-top p-3">
-    <form  method="POST"  enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!--CKeditor Script-->
-        <script type="text/javascript" src="/static/ckeditor/ckeditor-init.js" data-ckeditor-basepath="/static/ckeditor/ckeditor/" id="ckeditor-init-script"></script>
+        <script type="text/javascript" src="/static/ckeditor/ckeditor-init.js"
+            data-ckeditor-basepath="/static/ckeditor/ckeditor/" id="ckeditor-init-script"></script>
         <script type="text/javascript" src="/static/ckeditor/ckeditor/ckeditor.js"></script>
         {{form.non_field_errors }}
         {{form.field.errors }}
         <div class="form-group">
             <label for="id_title">Title:</label>
             {% if form.title.value %}
-            <input class='form-control' type="text" name="title" minlenght="30" maxlength="120" value="{{form.title.value}}" required id="id_title">
+            <input class='form-control' type="text" name="title" minlenght="30" maxlength="120"
+                value="{{form.title.value}}" required id="id_title">
             {% else %}
-            <input class='form-control' type="text" name="title" minlenght="30" maxlength="120"  required id="id_title">
+            <input class='form-control' type="text" name="title" minlenght="30" maxlength="120" required id="id_title">
             {% endif %}
             {{ form.title.errors }}
         </div>
@@ -50,9 +57,15 @@
             <label for="id_body">Body:</label>
             <div class="django-ckeditor-widget" data-field-id="id_body">
                 {% if form.body.value %}
-                <textarea cols="40" id="id_body" name="body" rows="10" required data-processed="0" data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;Special&quot;, &quot;height&quot;: &quot;600px&quot;, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;contentsCss&quot;: &quot;img {max-width: 100%;height: auto !important;}&quot;, &quot;toolbar_Special&quot;: [[&quot;Bold&quot;, &quot;Youtube&quot;, &quot;Image&quot;], [&quot;Link&quot;], [&quot;Undo&quot;, &quot;Redo&quot;]], &quot;extraPlugins&quot;: &quot;youtube,image2&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload/&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse/&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[[&quot;youtube&quot;, &quot;/static/vendor/ckeditor_plugins/youtube/&quot;, &quot;plugin.js&quot;]]" data-id="id_body" data-type="ckeditortype">{{form.body.value}}</textarea>
+                <textarea cols="40" id="id_body" name="body" rows="10" required data-processed="0"
+                    data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;Special&quot;, &quot;height&quot;: &quot;600px&quot;, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;contentsCss&quot;: &quot;img {max-width: 100%;height: auto !important;}&quot;, &quot;toolbar_Special&quot;: [[&quot;Bold&quot;, &quot;Youtube&quot;, &quot;Image&quot;], [&quot;Link&quot;], [&quot;Undo&quot;, &quot;Redo&quot;]], &quot;extraPlugins&quot;: &quot;youtube,image2&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload/&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse/&quot;, &quot;language&quot;: &quot;en-us&quot;}"
+                    data-external-plugin-resources="[[&quot;youtube&quot;, &quot;/static/vendor/ckeditor_plugins/youtube/&quot;, &quot;plugin.js&quot;]]"
+                    data-id="id_body" data-type="ckeditortype">{{form.body.value}}</textarea>
                 {% else %}
-                <textarea cols="40" id="id_body" name="body" rows="10" required data-processed="0" data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;Special&quot;, &quot;height&quot;: &quot;600px&quot;, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;contentsCss&quot;: &quot;img {max-width: 100%;height: auto !important;}&quot;, &quot;toolbar_Special&quot;: [[&quot;Bold&quot;, &quot;Youtube&quot;, &quot;Image&quot;], [&quot;Link&quot;], [&quot;Undo&quot;, &quot;Redo&quot;]], &quot;extraPlugins&quot;: &quot;youtube,image2&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload/&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse/&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[[&quot;youtube&quot;, &quot;/static/vendor/ckeditor_plugins/youtube/&quot;, &quot;plugin.js&quot;]]" data-id="id_body" data-type="ckeditortype"></textarea>
+                <textarea cols="40" id="id_body" name="body" rows="10" required data-processed="0"
+                    data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;Special&quot;, &quot;height&quot;: &quot;600px&quot;, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;contentsCss&quot;: &quot;img {max-width: 100%;height: auto !important;}&quot;, &quot;toolbar_Special&quot;: [[&quot;Bold&quot;, &quot;Youtube&quot;, &quot;Image&quot;], [&quot;Link&quot;], [&quot;Undo&quot;, &quot;Redo&quot;]], &quot;extraPlugins&quot;: &quot;youtube,image2&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload/&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse/&quot;, &quot;language&quot;: &quot;en-us&quot;}"
+                    data-external-plugin-resources="[[&quot;youtube&quot;, &quot;/static/vendor/ckeditor_plugins/youtube/&quot;, &quot;plugin.js&quot;]]"
+                    data-id="id_body" data-type="ckeditortype"></textarea>
                 {% endif %}
                 {{ form.body.errors }}
             </div>
@@ -67,7 +80,7 @@
                 <option value="{{c.id}}">{{c}}</option>
                 {% endif %}
                 {% empty %}
-                <option value="" >---------</option>
+                <option value="">---------</option>
                 {% endfor %}
             </select>
             {{ form.category.errors }}
@@ -82,26 +95,32 @@
         <div class="form-group">
             <div class="img-preview">
                 {% if form.image_upload.value %}
-                <img src="/media/{{form.image_upload.value}}" alt="article_image" id="img_preview" class="rounded border border-dark">
+                <img src="/media/{{form.image_upload.value}}" alt="article_image" id="img_preview"
+                    class="rounded border border-dark">
                 {% else %}
-                <img src="{% static 'images/default.png' %}" alt="article_image" id="img_preview" class="rounded border border-info">
+                <img src="{% static 'images/default.png' %}" alt="article_image" id="img_preview"
+                    class="rounded border border-info">
                 {% endif %}
 
             </div>
             <div class="custom-file">
-                <label class ="btn btn-primary text-white" for="id_image_upload">{% if form.image_upload.value %}Change Thumbnail{% else %}Add Thumbnail{% endif %}</label>
-                <input type="file" name="image_upload" accept="image/*" onchange ='PreviewImage(event)'  id="id_image_upload">
+                <label class="btn btn-primary text-white" for="id_image_upload">{% if form.image_upload.value %}Change
+                    Thumbnail{% else %}Add Thumbnail{% endif %}</label>
+                <input type="file" name="image_upload" accept="image/*" onchange='PreviewImage(event)'
+                    id="id_image_upload">
                 {{form.image_upload.errors}}
             </div>
         </div>
         <div class="form-group ">
-            {% if request.user.creatorprofile.is_approved and not request.user.creatorprofile.banned  %}
+            {% if request.user.creatorprofile.is_approved and not request.user.creatorprofile.banned %}
             <button type="submit" class="btn btn-primary mt-2">Publish</button>
             {% else %}
             {% if request.user.creatorprofile.banned %}
-            <span class="text-danger">Your account has been banned. Contact administrator if you are seeing this by mistake</span>
+            <span class="text-danger">Your account has been banned. Contact administrator if you are seeing this by
+                mistake</span>
             {% else %}
-            <span class="text-warning">Your account is awaiting approval, you will be able to publish as soon as it is approved</span>
+            <span class="text-warning">Your account is awaiting approval, you will be able to publish as soon as it is
+                approved</span>
             {% endif %}
             {% endif %}
         </div>
@@ -109,7 +128,7 @@
 </div>
 
 <script type="text/javascript">
-    function PreviewImage(event){
+    function PreviewImage(event) {
         var output = document.getElementById('img_preview');
         output.src = URL.createObjectURL(event.target.files[0]);
     };

@@ -140,6 +140,10 @@ class Article(models.Model):
         ('2d', '2d'),
         ('no', 'No')
     )
+    A_TYPE_CHOICES = (
+        ('ppa','PPA'),
+        ('ppc','PPC')
+    )
     title = models.CharField(max_length=120)
     slug = models.SlugField(max_length=250, unique=True, blank=True, null=True)
     author = models.ForeignKey(
@@ -158,6 +162,8 @@ class Article(models.Model):
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, null=True, blank=True,
                               choices=STATUS_CHOICES, default=STATUS_CHOICES[0][0])
+    article_type = models.CharField(max_length=10, null=True, blank=True,
+                                    choices=A_TYPE_CHOICES, default=A_TYPE_CHOICES[0][0])
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                         related_name='articles_liked',
                                         blank=True)

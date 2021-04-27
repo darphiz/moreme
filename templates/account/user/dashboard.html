@@ -1,30 +1,36 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load class_name %}
 {% block title %}Dashboard | {{ request.user.username|title}}'s Profile{% endblock %}
 {% block decription %}View detais about yourself{% endblock %}
 {% block content %}
 {% if request.user.creatorprofile %}
 <div class="container-fluid">
     <!--Split into two columns on large-->
-   <div class="row">
-       <!--Nav-->
+    <div class="row">
+        <!--Nav-->
         <div class="col-lg-3 lf-col  nopadding">
-            <div class= "dash-nav" >
-                <a href="{% url 'articles_list' %}" class="dash-nav-items">Home</a>
+            <div class="dash-nav">
+                <a href="{% url 'dashboard' 'landing' %}" class="dash-nav-items">Home</a>
                 {% if request.user.creatorprofile.is_approved %}
                 <a href="{% url 'create_article' %}" class="dash-nav-items">Create</a>
                 {% else%}
                 <a href="#" class="dash-nav-items">Create</a>
                 {% endif %}
-                <a href="{% url 'dashboard' 'library' %}" class="dash-nav-items {% if library %}selected{% endif %}">Content Library
-                     <span class="float-right bg-primary post-category text-white mb-2">{{articles.count}}</span>
+                <a href="{% url 'dashboard' 'library' %}"
+                    class="dash-nav-items {% if library %}selected{% endif %}">Content Library
+                    <span class="float-right bg-primary post-category text-white mb-2">{{articles.count}}</span>
                 </a>
-                <a href="{% url 'dashboard' 'money' %}" class="dash-nav-items {% if money %}selected{% endif %}">Monetization(Payment Instruction)</a>
-                <a href="{% url 'dashboard' 'account' %}" class="dash-nav-items {% if account %}selected{% endif %}">Account</a>
-                <a href="{% url 'dashboard' 'editorial' %}" class="dash-nav-items {% if editorial %}selected{% endif %}">Editorial</a>
-                <a href="{% url 'dashboard' 'activity' %}" class="dash-nav-items {% if activity %}selected{% endif %}">Activity</a>
-                <a href="{% url 'dashboard' 'feedback' %}" class="dash-nav-items {% if feedback %}selected{% endif %}">Feedback/Complains</a>
+                <a href="{% url 'dashboard' 'money' %}"
+                    class="dash-nav-items {% if money %}selected{% endif %}">Monetization</a>
+                <a href="{% url 'dashboard' 'account' %}"
+                    class="dash-nav-items {% if account %}selected{% endif %}">Account</a>
+                <a href="{% url 'dashboard' 'editorial' %}"
+                    class="dash-nav-items {% if editorial %}selected{% endif %}">Editorial</a>
+                <a href="{% url 'dashboard' 'activity' %}"
+                    class="dash-nav-items {% if activity %}selected{% endif %}">Activity</a>
+                <a href="{% url 'dashboard' 'feedback' %}"
+                    class="dash-nav-items {% if feedback %}selected{% endif %}">Feedback/Complains</a>
             </div>
         </div>
         <!--Main profile-->
@@ -33,9 +39,11 @@
             <div class=" media right-nav2 bg-primary p-4 text-white">
                 <div class="media-left right-nav">
                     {% if request.user.profile.image %}
-                    <img style='width: 80px; height: 80px;' src="{{request.user.profile.image.url}}" alt="profile_image" class="rounded-circle media-object">
+                    <img style='width: 80px; height: 80px;' src="{{request.user.profile.image.url}}" alt="profile_image"
+                        class="rounded-circle media-object">
                     {% else %}
-                    <img style='width: 80px; height: 80px;' src="{% static 'images/avatar.png' %}" alt="profile_image" class="rounded-circle media-object">
+                    <img style='width: 80px; height: 80px;' src="{% static 'images/avatar.png' %}" alt="profile_image"
+                        class="rounded-circle media-object">
                     {% endif %}
                 </div>
                 <div class="container bg-primary ">
@@ -44,74 +52,100 @@
                 </div>
             </div>
 
-             <!--Likes and Followers-->
+            <!--Likes and Followers-->
             <div class="container">
                 <div class="row bdc">
-                    <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary bd"><h3 class="text-secondary ">{{acl.count}}</h3>Published</div>
-                    <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary bd"><h3 class="text-secondary ">{{request.user.following.count}}</h3>Following</div>
+                    <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary bd">
+                        <h3 class="text-secondary ">{{acl.count}}</h3>Published
+                    </div>
+                    <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary bd">
+                        <h3 class="text-secondary ">{{request.user.following.count}}</h3>Following
+                    </div>
                     {% with follower=request.user.followers.count %}
-                    <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary "><h3 class="text-secondary ">{{follower}}</h3>Follower{{follower|pluralize}}</div>
+                    <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary ">
+                        <h3 class="text-secondary ">{{follower}}</h3>Follower{{follower|pluralize}}
+                    </div>
                     {% endwith %}
                 </div>
             </div>
-<!--========================================================================================================================-->
-{% if landing %}
-    <div class="mx-3 mt-3">
-        <a class="btn btn-primary rounded" href="{% url 'dashboard' 'editorial' %}">Announcements({{art}}) &rarr;</a>
-    </div>
-    {% if not request.user.creatorprofile.is_approved and  not request.user.creatorprofile.banned %}
-    <div class="container">
-        <b><p class="text-warning text-lg-center">Your account is awaiting approval, you will be able to publish as soon as it is approved </p></b>
-    </div
-    {% else %}
-        {% if request.user.creatorprofile.banned %}
-    <div class="container">
-        <b><p class="text-danger text-lg-center">Your account has been banned or disapproved. If you are seeing this by mistake, send a mail to mail.moremehub@gmail.com</p></b>
-    </div>
-    {% endif %}
-    {% endif %}
+            <!--========================================================================================================================-->
+            {% if landing %}
+            <div class="mx-3 mt-3">
+                <a class="btn btn-primary rounded" href="{% url 'dashboard' 'editorial' %}">Announcements({{art}})
+                    &rarr;</a>
+            </div>
+            {% if not request.user.creatorprofile.is_approved and not request.user.creatorprofile.banned %}
+            <div class="container">
+                <b>
+                    <p class="text-warning text-lg-center">Your account is awaiting approval, you will be able to
+                        publish as soon as it is approved </p>
+                </b>
+            </div {% else %} {% if request.user.creatorprofile.banned %} <div class="container">
+            <b>
+                <p class="text-danger text-lg-center">Your account has been banned or disapproved. If you are seeing
+                    this by mistake, send a mail to mail.moremehub@gmail.com</p>
+            </b>
+        </div>
+        {% endif %}
+        {% endif %}
 
 
-    <!--Articles List-->
-            <div class="body">
-                {% with article=articles.count %}
-                <h3 style="padding: 10px">Recent Post{{article|pluralize}}</h3>
-                {% endwith %}
-                {% for article in articles %}
-                {% if article.revise == True %}
-                <a href="{% url 'edit_article' article.id %}">
+        <!--Articles List-->
+        <div class="body">
+            {% with article=articles.count %}
+            <h3 style="padding: 10px">Recent Post{{article|pluralize}}</h3>
+            {% endwith %}
+            {% for article in articles %}
+            {% if article.revise == True %}
+            <a href="{% url 'edit_article' article.id %}">
                 {% else %}
-               <a href="{{article.get_absolute_url}}">
-                   {% endif %}
-                   <div class="articles card p-1">
-                    <div class="media">
-                        <div class="image media-left "><img style='width: 80px; height: 60px;' src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object" ></div>
-                        <div class="container">
-                            <h6 style="color: black;">{{ article.title}}</h6>
-                            <div class="{% if article.status == 'published' %} stat-blue {% elif article.status == 'pending' %} stat-yellow {% else %} stat-red {% endif %} post-category text-white my-1 mb-3">{{article.status}}</div>
-                            {% if article.status == 'rejected' %}<div class=" stat-red post-category text-white my-1 mb-3">{{article.reject_reason}}</div> {% endif %}
+                <a href="{{article.get_absolute_url}}">
+                    {% endif %}
+                    <div class="articles card p-1">
+                        <div class="media">
+                            <div class="image media-left "><img style='width: 80px; height: 60px;'
+                                    src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object">
+                            </div>
+                            <div class="container">
+                                <h6 style="color: black;">{{ article.title}}</h6>
+                                <div
+                                    class="{% if article.status == 'published' %} stat-blue {% elif article.status == 'pending' %} stat-yellow {% else %} stat-red {% endif %} post-category text-white my-1 mb-3">
+                                    {{article.status}}</div>
+                                {% if article.status == 'rejected' %}<div
+                                    class=" stat-red post-category text-white my-1 mb-3">{{article.reject_reason}}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="container-fluid  impressions">
+                            <!--Article impressions on landing page-->
+                            <div class="row p-1 container-fluid ">
+                                {% if article.status == 'published' %}
+                                <div class="col-lg-4 col-sm-4 col-4  text-secondary ">
+                                    <h6 class="text-secondary  small">{{article.get_clicks}}
+                                        click{{article.get_clicks|pluralize}}</h6>
+                                </div>
+                                <div class="col-lg-4 col-sm-4 col-4  text-secondary ">
+                                    <h6 class="text-secondary  small">{{article.get_comments}}
+                                        comment{{article.get_comments|pluralize}}</h6>
+                                </div>
+                                <div class="col-lg-4 col-sm-4 col-4  text-secondary ">
+                                    <h6 class="text-secondary  small">{{article.users_like.count}}
+                                        like{{article.users_like.count|pluralize}}</h6>
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    <div class="container-fluid  impressions">
-                        <!--Article impressions on landing page-->
-                        <div class="row p-1 container-fluid ">
-                            {% if article.status == 'published' %}
-                            <div class="col-lg-4 col-sm-4 col-4  text-secondary "><h6 class="text-secondary  small">{{article.get_clicks}} click{{article.get_clicks|pluralize}}</h6></div>
-                            <div class="col-lg-4 col-sm-4 col-4  text-secondary "><h6 class="text-secondary  small">{{article.get_comments}} comment{{article.get_comments|pluralize}}</h6></div>
-                            <div class="col-lg-4 col-sm-4 col-4  text-secondary "><h6 class="text-secondary  small">{{article.users_like.count}} like{{article.users_like.count|pluralize}}</h6></div>
-                            {% endif %}
-                        </div>
-                    </div>
-                 </div></a>
-                 {% empty %}
-                 <div class="empty text-center">
-                  <h3 class="text-secondary"> Nothing Here :( </h3>
-                 </div>
-                 {% endfor %}
-          </div>
+                </a>
+                {% empty %}
+                <div class="empty text-center">
+                    <h3 class="text-secondary"> Nothing Here :( </h3>
+                </div>
+                {% endfor %}
+        </div>
 
-{% endif %}
-<!--====================[CONTENT LIBRARY ]==================================================================================================================-->
+        {% endif %}
+        <!--====================[CONTENT LIBRARY ]==================================================================================================================-->
         {% if library %}
 
 
@@ -120,156 +154,206 @@
             <h3 style="padding: 10px">Post{{article|pluralize}}</h3>
             {% endwith %}
             {% for article in articles %}
-           <a href="{{article.get_absolute_url}}"><div class="articles card p-1">
-                <div class="media">
-                    <div class="image media-left "><img style='width: 80px; height: 60px;' src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object" ></div>
-                    <div class="container">
-                        <h6 style="color: black;">{{ article.title}}</h6>
-                        <div class="{% if article.status == 'published' %} stat-blue {% elif article.status == 'pending' %} stat-yellow {% else %} stat-red {% endif %} post-category text-white my-1 mb-3">{{article.status}}</div>
-                        {% if article.status == 'rejected' %}<div class=" stat-red post-category text-white my-1 mb-3">{{article.reject_reason}}</div> {% endif %}
+            <a href="{{article.get_absolute_url}}">
+                <div class="articles card p-1">
+                    <div class="media">
+                        <div class="image media-left "><img style='width: 80px; height: 60px;'
+                                src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object"></div>
+                        <div class="container">
+                            <h6 style="color: black;">{{ article.title}}</h6>
+                            <div
+                                class="{% if article.status == 'published' %} stat-blue {% elif article.status == 'pending' %} stat-yellow {% else %} stat-red {% endif %} post-category text-white my-1 mb-3">
+                                {{article.status}}</div>
+                            {% if article.status == 'rejected' %}<div
+                                class=" stat-red post-category text-white my-1 mb-3">{{article.reject_reason}}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="container-fluid  impressions">
+                        <div class="row p-1 container-fluid ">
+                            {% if article.status == 'published' %}
+                            <div class="col-lg-4 col-sm-4 col-4  text-secondary ">
+                                <h6 class="text-secondary  small">{{article.get_clicks}}
+                                    click{{article.get_clicks|pluralize}}</h6>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-4  text-secondary ">
+                                <h6 class="text-secondary  small">{{article.get_comments}}
+                                    comment{{article.get_comments|pluralize}}</h6>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-4  text-secondary ">
+                                <h6 class="text-secondary  small">{{article.users_like.count}}
+                                    like{{article.users_like.count|pluralize}}</h6>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                <div class="container-fluid  impressions">
-                    <div class="row p-1 container-fluid ">
-                        {% if article.status == 'published' %}
-                        <div class="col-lg-4 col-sm-4 col-4  text-secondary "><h6 class="text-secondary  small">{{article.get_clicks}} click{{article.get_clicks|pluralize}}</h6></div>
-                        <div class="col-lg-4 col-sm-4 col-4  text-secondary "><h6 class="text-secondary  small">{{article.get_comments}} comment{{article.get_comments|pluralize}}</h6></div>
-                        <div class="col-lg-4 col-sm-4 col-4  text-secondary "><h6 class="text-secondary  small">{{article.users_like.count}} like{{article.users_like.count|pluralize}}</h6></div>
-                        {% endif %}
-                    </div>
-                </div>
-             </div></a>
-             {% empty %}
-             <div class="empty text-center">
-              <h3 class="text-secondary"> Your articles will appear here as soon as you start creating... </h3>
-             </div>
-             {% endfor %}
-      </div>
+            </a>
+            {% empty %}
+            <div class="empty text-center">
+                <h3 class="text-secondary"> Your articles will appear here as soon as you start creating... </h3>
+            </div>
+            {% endfor %}
+        </div>
 
 
         {% endif %}
 
-<!--====================[ MONETIZATION ]==================================================================================================================-->
-{% if money %}
-    <div class="p-4 m-4 rounded border">
-    <p class="text-secondary text-center">Features are being developed...</p>
-    <p>However, payment are made at the end of the month per total articles published.</p>
-    <p>MoremeHub pays N250.00 per article successfully published to your registered bank account.</p>
-    </div>
-{% endif %}
-<!--====================[ ACCOUNT ]==================================================================================================================-->
-{% if account %}
-<div class="container">
-    <h3 class="custom text-primary my-2 btn">Personal Info</h3>
-   {% if request.user.creatorprofile %}
-    <div class="container">
-        <h4>Account information</h4>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th>CHANNEL NAME</th>
-                    <td>{{request.user.creatorprofile.channel_name}}</td>
-                </tr>
-                <tr>
-                    <th>BIO</th>
-                    <td>{{request.user.creatorprofile.bio}}</td>
-                </tr>
-                <tr>
-                    <th>PHONE NUMBER</th>
-                    <td>{{request.user.creatorprofile.phonenumber}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
+        <!--====================[ MONETIZATION ]==================================================================================================================-->
+        {% if money %}
+        <div class="p-4 m-4 rounded border">
+            <h3 class="text-center">Your Generated Revenue This Month</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">PPA Revenue<p>N {{ppa_revenue}}</p>
+                        </th>
+                        <th scope="col">PPC Revenue<p>N {{ppc_revenue}}</p>
+                        </th>
+                        <th scope="col">Total Revenue<p>N {{total_revenue}}</p>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <h3>List Of Monetized articles</h3>
+            <table class="table">
+                <tbody>
+                    {% for article in month_articles %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{article.title}}</td>
+                        <td>{% if article.article_type == 'ppa' %}N500{% else %}N{{article.get_clicks|mul:0.06}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <p>You have not published any article this month. Stats will appear here as soon as you start
+                        publishing!</p>
+                    {% endfor %}
 
-    <div class="container">
-        <h4>Contact information</h4>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th>PHOTO</th>
-                    <td>
-
-                        {% if request.user.profile.image %}
-                        <img style='width: 100px; height: 100px;' src="{{request.user.profile.image.url}}" alt="profile_image" class="rounded-circle">
-                        {% else %}
-                        <img style='width: 100px; height: 100px;' src="{% static 'images/avatar.png' %}" alt="profile_image" class="rounded-circle">
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th>LEGAL NAME</th>
-                    <td>{{request.user.first_name}} {{request.user.last_name}}</td>
-                </tr>
-                <tr>
-                    <th>EMAIL</th>
-                    <td>{{request.user.email}}</td>
-                </tr>
-                <tr>
-                    <th>INTERESTS</th>
-                    <td>{% for cat in request.user.profile.get_interest %} {{cat}} {% endfor %} </td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-
-    </div>
-
-</div>
-
-
-    {% endif %}
-
-<!--====================[ EDITORIAL ]==================================================================================================================-->
-{% if editorial %}
-<div class="container">
-<div class="body">
-    {% with article=articles.count %}
-    <h3 style="padding: 10px">Instruction{{article|pluralize}}</h3>
-    {% endwith %}
-    {% for article in articles %}
-    {% if article.revise == True %}
-    <a href="{% url 'edit_article' article.id %}">
-    {% else %}
-   <a href="{{article.get_absolute_url}}">
-       {% endif %}
-       <div class="articles card p-1">
-        <div class="media">
-            <div class="image media-left "><img style='width: 80px; height: 60px;' src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object" ></div>
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        <!--====================[ ACCOUNT ]==================================================================================================================-->
+        {% if account %}
+        <div class="container">
+            <h3 class="custom text-primary my-2 btn">Personal Info</h3>
+            {% if request.user.creatorprofile %}
             <div class="container">
-                <h6 style="color: black;">{{ article.title}}</h6>
+                <h4>Account information</h4>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>CHANNEL NAME</th>
+                            <td>{{request.user.creatorprofile.channel_name}}</td>
+                        </tr>
+                        <tr>
+                            <th>BIO</th>
+                            <td>{{request.user.creatorprofile.bio}}</td>
+                        </tr>
+                        <tr>
+                            <th>PHONE NUMBER</th>
+                            <td>{{request.user.creatorprofile.phonenumber}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+            {% endif %}
+
+            <div class="container">
+                <h4>Contact information</h4>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>PHOTO</th>
+                            <td>
+
+                                {% if request.user.profile.image %}
+                                <img style='width: 100px; height: 100px;' src="{{request.user.profile.image.url}}"
+                                    alt="profile_image" class="rounded-circle">
+                                {% else %}
+                                <img style='width: 100px; height: 100px;' src="{% static 'images/avatar.png' %}"
+                                    alt="profile_image" class="rounded-circle">
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>LEGAL NAME</th>
+                            <td>{{request.user.first_name}} {{request.user.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <th>EMAIL</th>
+                            <td>{{request.user.email}}</td>
+                        </tr>
+                        <tr>
+                            <th>INTERESTS</th>
+                            <td>{% for cat in request.user.profile.get_interest %} {{cat}} {% endfor %} </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
-     </div></a>
-     {% empty %}
-     <div class="p-4 m-4 rounded border">
-      <p class="text-center"> Nothing Here :( </p>
-     </div>
-     {% endfor %}
-</div>
-</div>
-{% endif %}
-
-<!--====================[ ACTIIVITY ]==================================================================================================================-->
-{% if activity %}
-<div class="p-4 m-4 rounded border">
-    <p class="text-center"> Features are being developed...  </p>
-</div>
-{% endif %}
-<!--=============================================================================================================================================================-->
-<!--====================[ FEEDBACK]==================================================================================================================-->
-{% if feedback %}
-<div class="p-4 m-4 rounded border">
-    <p class="text-secondary text-center">All feedbacks and complains should be addressed to mail.moremehub@gmail.com</p>
-    <p class="text-secondary text-center">You can also send a Whatsapp message to +2347068533426  </p>
-   </div>
-{% endif %}
-
-</div>
     </div>
+
+
+    {% endif %}
+
+    <!--====================[ EDITORIAL ]==================================================================================================================-->
+    {% if editorial %}
+    <div class="container">
+        <div class="body">
+            {% with article=articles.count %}
+            <h3 style="padding: 10px">Instruction{{article|pluralize}}</h3>
+            {% endwith %}
+            {% for article in articles %}
+            {% if article.revise == True %}
+            <a href="{% url 'edit_article' article.id %}">
+                {% else %}
+                <a href="{{article.get_absolute_url}}">
+                    {% endif %}
+                    <div class="articles card p-1">
+                        <div class="media">
+                            <div class="image media-left "><img style='width: 80px; height: 60px;'
+                                    src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object">
+                            </div>
+                            <div class="container">
+                                <h6 style="color: black;">{{ article.title}}</h6>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+                {% empty %}
+                <div class="p-4 m-4 rounded border">
+                    <p class="text-center"> Nothing Here :( </p>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!--====================[ ACTIIVITY ]==================================================================================================================-->
+    {% if activity %}
+    <div class="p-4 m-4 rounded border">
+        <p class="text-center"> Features are being developed... </p>
+    </div>
+    {% endif %}
+    <!--=============================================================================================================================================================-->
+    <!--====================[ FEEDBACK]==================================================================================================================-->
+    {% if feedback %}
+    <div class="p-4 m-4 rounded border">
+        <p class="text-secondary text-center">All feedbacks and complains should be addressed to
+            mail.moremehub@gmail.com</p>
+        <p class="text-secondary text-center">You can also send a Whatsapp message to +2347068533426 </p>
+    </div>
+    {% endif %}
+
+</div>
+</div>
 </div>
 
 {% else %}
@@ -277,23 +361,31 @@
 <div class=" media right-nav2 bg-primary p-4 text-white">
     <div class="media-left right-nav">
         {% if request.user.profile.image %}
-                        <img style='width: 75px; height: 75px;' src="{{request.user.profile.image.url}}" alt="profile_image" class="rounded-circle">
-                        {% else %}
-                        <img style='width: 75px; height: 75px;' src="{% static 'images/avatar.png' %}" alt="profile_image" class="rounded-circle">
-                        {% endif %}
+        <img style='width: 75px; height: 75px;' src="{{request.user.profile.image.url}}" alt="profile_image"
+            class="rounded-circle">
+        {% else %}
+        <img style='width: 75px; height: 75px;' src="{% static 'images/avatar.png' %}" alt="profile_image"
+            class="rounded-circle">
+        {% endif %}
     </div>
     <div class="container bg-primary ">
         <h3 class="text-white">{{ request.user.username}}</h3>
         {{ request.user.first_name}} {{ request.user.last_name}}
     </div>
 </div>
-  <!--Likes and Followers-->
-  <div>
+<!--Likes and Followers-->
+<div>
     <div class="row bdc">
-        <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary  bd"><h3 class="text-secondary ">{{acl.count}}</h3>Published</div>
-        <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary  bd"><h3 class="text-secondary ">{{request.user.following.count}}</h3>Following</div>
+        <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary  bd">
+            <h3 class="text-secondary ">{{acl.count}}</h3>Published
+        </div>
+        <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary  bd">
+            <h3 class="text-secondary ">{{request.user.following.count}}</h3>Following
+        </div>
         {% with follower=request.user.followers.count %}
-        <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary  "><h3 class="text-secondary ">{{follower}}</h3>Follower{{follower|pluralize}}</div>
+        <div class="col-lg-4 col-sm-4 col-4 text-center text-secondary  ">
+            <h3 class="text-secondary ">{{follower}}</h3>Follower{{follower|pluralize}}
+        </div>
         {% endwith %}
     </div>
 </div>
@@ -301,7 +393,7 @@
 
 <div class="container">
     <h3 class="custom text-primary my-2 btn">Personal Info</h3>
-   {% if request.user.creatorprofile %}
+    {% if request.user.creatorprofile %}
     <div class="container">
         <h4>Account information</h4>
         <table class="table">
@@ -330,9 +422,11 @@
                 <tr>
                     <th>PHOTO</th>
                     <td>{% if request.user.profile.image %}
-                        <img style='width: 100px; height: 100px;' src="{{request.user.profile.image.url}}" alt="profile_image" class="rounded-circle">
+                        <img style='width: 100px; height: 100px;' src="{{request.user.profile.image.url}}"
+                            alt="profile_image" class="rounded-circle">
                         {% else %}
-                        <img style='width: 100px; height: 100px;' src="{% static 'images/avatar.png' %}" alt="profile_image" class="rounded-circle">
+                        <img style='width: 100px; height: 100px;' src="{% static 'images/avatar.png' %}"
+                            alt="profile_image" class="rounded-circle">
                         {% endif %}
                     </td>
                 </tr>
@@ -351,10 +445,13 @@
 
             </tbody>
         </table>
-        <p><a href="{% url 'register_creator' %}" class="btn btn-primary btn-sm rounded px-4 py-2">Become A Creator</a> </p><p><a href="{% url 'login' %}" class="btn btn-success btn-sm user rounded px-4 py-2">Login/Register</a></p><p><a href="{% url 'logout' %}" class="btn user btn-danger btn-sm rounded px-4 py-2">Logout</a></p>
+        <p><a href="{% url 'register_creator' %}" class="btn btn-primary btn-sm rounded px-4 py-2">Become A Creator</a>
+        </p>
+        <p><a href="{% url 'login' %}" class="btn btn-success btn-sm user rounded px-4 py-2">Login/Register</a></p>
+        <p><a href="{% url 'logout' %}" class="btn user btn-danger btn-sm rounded px-4 py-2">Logout</a></p>
     </div>
 
-    </div>
+</div>
 
 </div>
 

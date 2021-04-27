@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 from common.decorators import ajax_required
 from .models import Contact, CreatorProfile
 from articles.models import Article
+from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 ########################################
@@ -35,12 +36,12 @@ def register(request):
         if cpassword != password:
             form_error = "password not matching"
             context = {'form_error': form_error,
-                       'user_form': user_form, 'profile_form': profile_form, 'form_css':form_css}
+                       'user_form': user_form, 'profile_form': profile_form, 'form_css': form_css}
             return render(request, 'account/auth/register.html', context)
         elif User.objects.filter(email=email).exists():
             form_error = "Email taken by another user, try another one."
             context = {'form_error': form_error,
-                       'user_form': user_form, 'profile_form': profile_form, 'form_css':form_css}
+                       'user_form': user_form, 'profile_form': profile_form, 'form_css': form_css}
             return render(request, 'account/auth/register.html', context)
         elif user_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
@@ -59,7 +60,7 @@ def register(request):
         user_form = UserForm()
         profile_form = ProfileForm()
     context = {'user_form': user_form,
-               'profile_form': profile_form, 'registered': registered,'form_css':form_css}
+               'profile_form': profile_form, 'registered': registered, 'form_css': form_css}
     return render(request, 'account/auth/register.html', context)
 
 
@@ -73,12 +74,12 @@ def register_creator(request):
         if not user:
             zoo = "Unable to authenticate user, check username and password. Note that you need to create a hub account first before upgrading to a creator account. Still getting this error? send an email to mail.moremehub@gmail.com"
             return render(request, 'account/auth/register_creator.html',
-                          {'form': form, 'zoo': zoo,'form_css':form_css})
+                          {'form': form, 'zoo': zoo, 'form_css': form_css})
 
         elif CreatorProfile.objects.filter(user=user).exists() == True:
             zoo = "This user already has a creator account"
             return render(request, 'account/auth/register_creator.html',
-                          {'form': form, 'zoo': zoo, 'form_css':form_css})
+                          {'form': form, 'zoo': zoo, 'form_css': form_css})
         elif form.is_valid():
             user.profile.is_creator = True
             user.profile.save()
@@ -89,7 +90,7 @@ def register_creator(request):
     else:
         form = CreatorProfileForm()
 
-    return render(request, 'account/auth/register_creator.html', {'form': form,'form_css':form_css})
+    return render(request, 'account/auth/register_creator.html', {'form': form, 'form_css': form_css})
 
 
 def user_login(request):
@@ -107,9 +108,9 @@ def user_login(request):
         else:
             form_error = "Invalid login details: {0} | {1}".format(
                 username, password)
-            return render(request, 'account/auth/login.html', {'form_error': form_error,'form_css':form_css})
+            return render(request, 'account/auth/login.html', {'form_error': form_error, 'form_css': form_css})
     else:
-        return render(request, 'account/auth/login.html', {'form_css':form_css})
+        return render(request, 'account/auth/login.html', {'form_css': form_css})
 
 
 @login_required
@@ -139,12 +140,11 @@ def user_list(request):
     return render(request, 'account/user/list.html', {'section': 'people', 'users': users})
 
 
-
 def user_detail(request, username):
     ajax_here = True
     user = get_object_or_404(User, username=username, is_active=True)
     articles = Article.published.filter(author=user).order_by('-publish')
-    return render(request, 'account/user/detail.html', {'user': user, 'articles': articles,'ajax_here':ajax_here})
+    return render(request, 'account/user/detail.html', {'user': user, 'articles': articles, 'ajax_here': ajax_here})
 
  ########################################
  ########################################
@@ -182,13 +182,24 @@ def dashboard(request, action):
         articles = Article.objects.filter(author=request.user)[:5]
         art = Article.objects.filter(
             author__username='admin', status='published').count()
-        context = {'articles': articles, 'landing': landing,'art':art}
+        context = {'articles': articles, 'landing': landing, 'art': art}
     if action == 'library':
         library = True
         context = {'articles': articles, 'library': library}
     if action == 'money':
         money = True
-        context = {'articles': articles, 'money': money}
+        y = []
+        month_articles = acl.filter(created__gte=timezone.now().replace(
+            day=1, hour=0, minute=0, second=0, microsecond=0))
+        ppc_articles = month_articles.filter(article_type='ppc')
+        for article in ppc_articles:
+            x = article.get_clicks()
+            y.append(x)
+        ppc_revenue = float(sum(y) * 0.06)
+        ppa_revenue = month_articles.filter(article_type='ppa').count() * 500
+        total_revenue = ppc_revenue + ppa_revenue
+        context = {'articles': articles, 'money': money,
+                   'month_articles': month_articles, 'ppa_revenue': ppa_revenue, 'ppc_revenue': ppc_revenue, 'total_revenue': total_revenue}
     if action == 'account':
         account = True
         context = {'articles': articles, 'account': account}
