@@ -269,90 +269,101 @@
                             <th>PHOTO</th>
                             <td>
 
-                                {% if request.user.profile.image %}
-                                <img style='width: 100px; height: 100px;' src="{{request.user.profile.image.url}}"
-                                    alt="profile_image" class="rounded-circle">
-                                {% else %}
-                                <img style='width: 100px; height: 100px;' src="{% static 'images/avatar.png' %}"
-                                    alt="profile_image" class="rounded-circle">
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>LEGAL NAME</th>
-                            <td>{{request.user.first_name}} {{request.user.last_name}}</td>
-                        </tr>
-                        <tr>
-                            <th>EMAIL</th>
-                            <td>{{request.user.email}}</td>
-                        </tr>
-                        <tr>
-                            <th>INTERESTS</th>
-                            <td>{% for cat in request.user.profile.get_interest %} {{cat}} {% endfor %} </td>
-                        </tr>
+                                <div class="container">
+                                    <h4>Contact information</h4>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>PHOTO</th>
+                                                <td>
 
-                    </tbody>
-                </table>
+                                                    {% if request.user.profile.image %}
+                                                    <img style='width: 100px; height: 100px;'
+                                                        src="{{request.user.profile.image.url}}" alt="profile_image"
+                                                        class="rounded-circle">
+                                                    {% else %}
+                                                    <img style='width: 100px; height: 100px;'
+                                                        src="{% static 'images/avatar.png' %}" alt="profile_image"
+                                                        class="rounded-circle">
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>LEGAL NAME</th>
+                                                <td>{{request.user.first_name}} {{request.user.last_name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>EMAIL</th>
+                                                <td>{{request.user.email}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>INTERESTS</th>
+                                                <td>{% for cat in request.user.profile.get_interest %} {{cat}} {% endfor
+                                                    %} </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
             </div>
 
         </div>
 
-    </div>
 
+        {% endif %}
 
-    {% endif %}
-
-    <!--====================[ EDITORIAL ]==================================================================================================================-->
-    {% if editorial %}
-    <div class="container">
-        <div class="body">
-            {% with article=articles.count %}
-            <h3 style="padding: 10px">Instruction{{article|pluralize}}</h3>
-            {% endwith %}
-            {% for article in articles %}
-            {% if article.revise == True %}
-            <a href="{% url 'edit_article' article.id %}">
-                {% else %}
-                <a href="{{article.get_absolute_url}}">
-                    {% endif %}
-                    <div class="articles card p-1">
-                        <div class="media">
-                            <div class="image media-left "><img style='width: 80px; height: 60px;'
-                                    src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object">
+        <!--====================[ EDITORIAL ]==================================================================================================================-->
+        {% if editorial %}
+        <div class="container">
+            <div class="body">
+                {% with article=articles.count %}
+                <h3 style="padding: 10px">Instruction{{article|pluralize}}</h3>
+                {% endwith %}
+                {% for article in articles %}
+                {% if article.revise == True %}
+                <a href="{% url 'edit_article' article.id %}">
+                    {% else %}
+                    <a href="{{article.get_absolute_url}}">
+                        {% endif %}
+                        <div class="articles card p-1">
+                            <div class="media">
+                                <div class="image media-left "><img style='width: 80px; height: 60px;'
+                                        src="{{article.image_upload.url}}" alt="{{article.title}}" class="media-object">
+                                </div>
+                                <div class="container">
+                                    <h6 style="color: black;">{{ article.title}}</h6>
+                                </div>
                             </div>
-                            <div class="container">
-                                <h6 style="color: black;">{{ article.title}}</h6>
-                            </div>
+
                         </div>
-
+                    </a>
+                    {% empty %}
+                    <div class="p-4 m-4 rounded border">
+                        <p class="text-center"> Nothing Here :( </p>
                     </div>
-                </a>
-                {% empty %}
-                <div class="p-4 m-4 rounded border">
-                    <p class="text-center"> Nothing Here :( </p>
-                </div>
-                {% endfor %}
+                    {% endfor %}
+            </div>
         </div>
-    </div>
-    {% endif %}
+        {% endif %}
 
-    <!--====================[ ACTIIVITY ]==================================================================================================================-->
-    {% if activity %}
-    <div class="p-4 m-4 rounded border">
-        <p class="text-center"> Features are being developed... </p>
-    </div>
-    {% endif %}
-    <!--=============================================================================================================================================================-->
-    <!--====================[ FEEDBACK]==================================================================================================================-->
-    {% if feedback %}
-    <div class="p-4 m-4 rounded border">
-        <p class="text-secondary text-center">All feedbacks and complains should be addressed to
-            mail.moremehub@gmail.com</p>
-        <p class="text-secondary text-center">You can also send a Whatsapp message to +2347068533426 </p>
-    </div>
-    {% endif %}
+        <!--====================[ ACTIIVITY ]==================================================================================================================-->
+        {% if activity %}
+        <div class="p-4 m-4 rounded border">
+            <p class="text-center"> Features are being developed... </p>
+        </div>
+        {% endif %}
+        <!--=============================================================================================================================================================-->
+        <!--====================[ FEEDBACK]==================================================================================================================-->
+        {% if feedback %}
+        <div class="p-4 m-4 rounded border">
+            <p class="text-secondary text-center">All feedbacks and complains should be addressed to
+                mail.moremehub@gmail.com</p>
+            <p class="text-secondary text-center">You can also send a Whatsapp message to +2347068533426 </p>
+        </div>
+        {% endif %}
 
-</div>
+    </div>
 </div>
 </div>
 

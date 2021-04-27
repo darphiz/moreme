@@ -99,7 +99,7 @@
           <div class="col-12 section-heading"><h2>Recommended For You</h1></div>
         </div>
         <div class="row">
-          {% for article in for_you %}
+          {% for article in for_you|slice:":5" %}
           {% if forloop.first %}
           <div class="col-lg-6 mb-2 mb-lg-0 ">
             <div class="entry2 m-1 border p-4 rounded">
@@ -207,7 +207,7 @@
       </div>
     </div>
 
-    
+
     <div class="container my-1 text-center">
       <a href="{% url 'query' action='explore' arg='explore' %}" class="btn rounded mb-3 btn-primary">View More Articles</a>
     </div>

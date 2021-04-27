@@ -160,6 +160,8 @@ class Article(models.Model):
     publish = models.DateTimeField(auto_now_add=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    article_type = models.CharField(max_length=10, null=True, blank=True,
+                                    choices=A_TYPE_CHOICES, default=A_TYPE_CHOICES[0][0])
     status = models.CharField(max_length=10, null=True, blank=True,
                               choices=STATUS_CHOICES, default=STATUS_CHOICES[0][0])
     article_type = models.CharField(max_length=10, null=True, blank=True,
