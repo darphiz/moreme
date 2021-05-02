@@ -5,8 +5,8 @@
 {% block titletw %}Moreme Hub{% endblock %}
 {% block titlefb %}Moreme Hub{% endblock %}
 {% block descriptionfb %}On Moreme Hub, your interest is our priority. Get abreast with timely news, interesting articles and inspiring stories to keep you glued to your screen{%endblock%}
-{% block thumb %}{% static 'images/moreme_logo.png' %}{% endblock %}
-{% block thumb1 %}{% static 'images/moreme_logo.png' %}{% endblock %}
+{% block thumb %}{% static 'images/moreme_logo.webp' %}{% endblock %}
+{% block thumb1 %}{% static 'images/moreme_logo2.webp' %}{% endblock %}
 
 {% block content %}
  {% load thumbnail %}
@@ -130,7 +130,7 @@
 
             <div class="entry3 d-block d-sm-flex border p-4 rounded">
               <figure class="figure order-2"><a href="{{ article.get_absolute_url}}">
-                {% thumbnail article.image_upload "300x300" crop="center" format="WEBP" as im %}
+                {% thumbnail article.image_upload "500x500" crop="center" format="WEBP" as im %}
                 <img src="{{im.url}}"alt="suggested article {{article.id}} thumbnail" width="{{ im.width }}" height="{{ im.height }}" class="img-fluid rounded"></a>
                 {% endthumbnail %}
               </figure>
@@ -187,7 +187,7 @@
 
             <div class="entry3 d-block d-sm-flex border p-4 rounded">
               <figure class="figure order-2"><a href="{{ article.get_absolute_url}}">
-                {% thumbnail article.image_upload "300x300" crop="center" format="WEBP" as im %}
+                {% thumbnail article.image_upload "500x500" crop="center" format="WEBP" as im %}
                 <img src="{{im.url}}"alt="suggested article {{article.id}} thumbnail" width="{{ im.width }}" height="{{ im.height }}" class="img-fluid rounded"></a>
                 {% endthumbnail %}
               </figure>

@@ -197,7 +197,9 @@ def dashboard(request, action):
             y.append(x)
         ppc_revenue = float(sum(y) * 0.06)
         ppa_revenue = month_articles.filter(article_type='ppa').count() * 500
-        total_revenue = ppc_revenue + ppa_revenue
+        total_revenue =format( ppc_revenue + ppa_revenue, '.2f')  #format to two decimal place
+        ppc_revenue = format( ppc_revenue, '.2f')  #format to two decimal place
+        ppa_revenue = format( ppa_revenue, '.2f') #format to two decimal place
         context = {'articles': articles, 'money': money,
                    'month_articles': month_articles, 'ppa_revenue': ppa_revenue, 'ppc_revenue': ppc_revenue, 'total_revenue': total_revenue}
     if action == 'account':

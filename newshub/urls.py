@@ -23,13 +23,14 @@ from ckeditor_uploader import views as ckeditor_views
 from django.contrib.sitemaps.views import sitemap
 from articles.sitemaps import ArticleSitemap
 from django.conf.urls import handler404, handler500
-
+from django.conf.urls import url
 sitemaps = {
     'articles': ArticleSitemap,
 }
 urlpatterns = [
     path('admin_moreme_1806/', admin.site.urls),
     path('', include('articles.urls')),
+    url('', include('pwa.urls')),
     path('ckeditor/upload/', login_required(ckeditor_views.upload),
          name='ckeditor_upload'),
     path('ckeditor/browse/', never_cache(login_required(ckeditor_views.browse)),

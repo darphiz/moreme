@@ -15,7 +15,11 @@
 {% block datep %}{{article.publish}}{% endblock%}
 {% block datem %}{{article.updated}}{% endblock%}
  {% load thumbnail %}
-
+{% block meta %}
+{% if article.status == 'published' %}
+<script data-ad-client="ca-pub-8164139980360647" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+{% endif %}
+{% endblock %}
 {% block content %}
 
 

@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+#PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9kumj=)%-i6z6lw#e0wgp@sc%y=nyu)#hm14n)gyi=x38$4l#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =False
 
 ALLOWED_HOSTS = ['www.moremehub.com', 'moremehub.com']
 #ALLOWED_HOSTS = ['*']
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'sorl.thumbnail',
+    'pwa',
 ]
 
 CKEDITOR_UPLOAD_PATH = 'post_images/'
@@ -67,7 +68,7 @@ CKEDITOR_CONFIGS = {
             ['Flash', 'Table', 'HorizontalRule', ],
             ['Smiley', 'SpecialChar'],
             ['BGColor', 'TextColor', 'Source'], ['NumberedList', 'BulletedList',
-                                                 'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight'] 
+                                                 'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight']
                                                  ],
     },
     'special': {
@@ -210,5 +211,48 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'mail.moremehub@gmail.com'
+EMAIL_HOST_PASSWORD = '@18061999Ayo'
+
+PWA_APP_NAME = 'MoremeHub App'
+PWA_APP_DESCRIPTION = "Never miss any interesting article on Moremehub Again!"
+PWA_APP_THEME_COLOR = '#FFFAFA'
+PWA_APP_BACKGROUND_COLOR = '#20B0E9'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_START_URL = '/'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/images/moreme_logo160.png',
+        'sizes': '160x160',
+        'type': 'image/png'
+    },{
+    'src':'statics/images/moreme_logo192.png',
+    'sizes':'192x192',
+    'purpose': 'any maskable',
+    'type': 'image/png'
+    },
+{
+    'src':'statics/images/moreme_logo512.png',
+    'sizes':'512x512',
+    'type': 'image/png'
+}
+
+]
+
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': 'static/images/moreme_logo.jpg',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': 'static/images/moreme_logo630.png',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'

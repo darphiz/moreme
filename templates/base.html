@@ -1,26 +1,37 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
     <title>{% block title %} {% endblock %}</title>
     {% if article %}
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": "{% block titleseo %}{% endblock %}",
-      "image": [
-          "https://www.moremehub.com{% block thumb2 %}{% endblock %}"
-       ],
-      "datePublished": "{% block datep %}{% endblock%}",
-      "dateModified": "{% block datem %}{% endblock %}"
-    }
+        {
+          "@context": "https://schema.org/",
+          "@type": "Article",
+          "headline": "{% block titleseo %}{% endblock %}",
+          "image":  "https://www.moremehub.com{% block thumb2 %}{% endblock %}",
+          "description": "{{article.body|truncatewords:25|cut:'<p>'|cut:'</p>'}}",
+          "author": {
+            "@type": "Person",
+            "name": "{{article.author.get_full_name}}"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "MoremeHub"
+          },
+          "datePublished": "{% block datep %}{% endblock%}",
+          "dateModified": "{% block datem %}{% endblock %}"
+        }
     </script>
 
     {% endif %}
     <!--Meta Tags-->
+        {% load pwa %}
+{% progressive_web_app_meta %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:site_name" content="MoremeHub" />
     <meta name="description" content="{% block description %}{% endblock %}">   <!--106 words Maximum-->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@moremehub.com" />
@@ -33,9 +44,8 @@
     <meta property="og:image:width" content="400" />
     <meta property="og:image:height" content="300" />
     <meta name="msvalidate.01" content="AA2A3FD98F6C17BCDE8184DDDA805E83" />
-
+    <link rel="icon" sizes="192x192" href="{% static 'images/moreme_logo.webp' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
         <!-- connect to domain of font files -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -55,12 +65,13 @@
 
     <link rel="shortcut icon" href="{% static 'icon/favicon.ico' %}">
     <link rel="preconnect" href="{% static 'fonts/icomoon/fonts/icomoon.ttf?10si43' %}">
-
+    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <!--Adsense Code -->
+  {% if not article %}
+   <!--Adsense Code -->
     <script data-ad-client="ca-pub-8164139980360647" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
+{% endif %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=141" media="screen">
     {% if cat %}
     <!--Tag css-->
@@ -73,9 +84,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     {% endif %}
 
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-STP8KGGEDS"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -87,7 +95,8 @@
   {% endblock %}
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
     <div class="site-wrap">
 
         <div class="site-mobile-menu">
@@ -125,7 +134,7 @@
                       {% if user.is_authenticated %}
                         <a href="{% url 'dashboard' 'landing' %}">{{request.user.username|title}}</a>
                         {% else %}
-                        <a href="{% url 'login' %}">Profile</a>
+                        <a href="{% url 'login' %}">Login/Register</a>
                       {% endif %}
                         <ul class="dropdown">
                           {% if request.user.is_authenticated %}
@@ -214,7 +223,7 @@
 
 <!-- JavaScript -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="{% static 'js/main.js' %}?v=258"></script>
+<script src="{% static 'js/main.js' %}?v270"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 {% if cat %}
 <!--Tags js-->
@@ -243,40 +252,5 @@
   });
   </script>
   {% endif %}
-
-  <script>
-    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-    webkitRequestAnimationFrame || msRequestAnimationFrame;
-    var app_css_loaded = false;
-    /* console.log(performance.now() + ' - ' + '1. async css script init'); */
-    var loadAppCss = function(){
-        if(!app_css_loaded) {
-            app_css_loaded = true;
-            var l = document.createElement('link'); l.rel = 'stylesheet';
-            l.href = '{% static "fonts/icomoon/style.css" %}';
-            var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
-            /* console.log(performance.now() + ' - ' + '5. script injected'); */
-        }
-    };
-    var cb = function() {
-        /* console.log(performance.now() + ' - ' + '3. cb called'); */
-        setTimeout(function(){
-            /* console.log(performance.now() + ' - ' + '4. timeout start'); */
-            loadAppCss();
-            /* console.log(performance.now() + ' - ' + '6. timeout end'); */
-        }, 3000);
-    };
-
-    window.addEventListener('load', function(){
-        /* console.log(performance.now() + ' - ' + '2. triggering cb directly'); */
-        if(raf) { raf(cb); } else { cb(); };
-    });
-    var loadAppCssOnScroll = function(){
-        /* console.log(performance.now() + ' - ' + '### triggering cb on scroll'); */
-        window.removeEventListener('scroll', loadAppCssOnScroll);
-        if(raf) { raf(loadAppCss); } else { loadAppCss() };
-    };
-    window.addEventListener('scroll', loadAppCssOnScroll);
-</script>
 </body>
 </html>

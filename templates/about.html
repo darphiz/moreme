@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block title %}About Moreme Hub{% endblock %}
 {% block description %}All you need to know about the fast rising Moreme Hub {% endblock %}
 {% block descriptionfb %}All you need to know about the fast rising Moreme Hub{% endblock %}
@@ -71,7 +72,9 @@
         <div class="row">
           {% for user in top_channel %}
           <div class="col-md-6 col-lg-4 mb-5 text-center">
-            <img style="max-height:180px;" src="{{user.user.profile.image.url}}" alt="Image" class="img-fluid w-50 rounded-circle mb-4">
+                 {% thumbnail user.user.profile.image "120x120" crop="center" format="WEBP" as im %}
+            <img height="{{im.height}}" width="{{im.width}}" src="{{im.url}}" alt="Image" class="img-fluid w-50 rounded-circle mb-4">
+            {% endthumbnail %}
             <h2 class="mb-3">{{user.channel_name}}</h2>
             <p>{{ user.bio }}</p>
           </div>

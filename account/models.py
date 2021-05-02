@@ -102,16 +102,17 @@ class BulkMail(models.Model):
                 x.append(mail)
         else:
             x = []
-            for use in CreatorProfile.objects.all():
+            for use in CreatorProfile.objects.filter(is_approved = True, banned = False ):
                 mail = use.user.email
-                x.append(mail)
+                if mail:
+                    x.append(mail)
         recipient = x
         if not self.already_sent == True:
             try:
-                msg = EmailMessage(subject, message, settings.EMAIL_HOST_USER, recipient)
+                msg = EmailMessage(subject, message, "Darphiz at Moremehub <mail.moremehub@gmail.com>", recipient)
                 msg.content_subtype = "html"
                 msg.send()
                 self.already_sent = True
             except BadHeaderError:
-                return HttpResponse('Invalid header found.')    
+                return HttpResponse('Invalid header found.')
         super(BulkMail, self).save(*args, **kwargs)
