@@ -28,22 +28,28 @@ sitemaps = {
     'articles': ArticleSitemap,
 }
 urlpatterns = [
+
     path('admin_moreme_1806/', admin.site.urls),
     path('', include('articles.urls')),
     url('', include('pwa.urls')),
+    path('summernote/', include('django_summernote.urls')),
+    path('account/', include('account.urls')),
+    path('news_recommendation/', include('news_recommendation.urls')),
     path('ckeditor/upload/', login_required(ckeditor_views.upload),
          name='ckeditor_upload'),
     path('ckeditor/browse/', never_cache(login_required(ckeditor_views.browse)),
          name='ckeditor_browse'),
-    path('account/', include('account.urls')),
-    path('news_recommendation/', include('news_recommendation.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),
 
 
+
 ]
-urlpatterns = urlpatterns + \
+"""
+urlpatterns = urlpatterns +
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+"""
 
 handler404 = 'articles.views.handler404'
 handler500 = 'articles.views.handler500'

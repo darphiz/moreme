@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Profile, CreatorProfile, BulkMail
-
+from django_summernote.admin import SummernoteModelAdmin
 
 def approve_selected(modeladmin, request, queryset):
     queryset.update(is_approved=True)
@@ -46,7 +46,8 @@ class CreatorProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'channel_name', 'is_approved', 'banned')
     list_filter = ('is_approved', 'banned')
     actions = [approve_selected, remove_approval, ban_selected, lift_ban]
-class BulkMailAdmin(admin.ModelAdmin):
+class BulkMailAdmin(SummernoteModelAdmin):
+    summernote_fields = ('message',)
     list_display = ('subject',)
 
 admin.site.register(BulkMail, BulkMailAdmin)

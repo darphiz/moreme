@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Advertise, Article, Category, Comment, View, Subscriber
+from django_summernote.admin import SummernoteModelAdmin
 # Register your models here.
 
 
@@ -34,15 +35,16 @@ def trend(modeladmin, request, queryset):
 
 
 @admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(SummernoteModelAdmin):
+    summernote_fields = ('body',)
     list_display = ('title',  'author', 'publish', 'status')
     list_filter = ('status', 'created', 'publish',
-                   'active', 'trend_for', 'revise', 'editors_pick')
+                   'active', 'trend_for', 'revise', 'editors_pick','article_type')
     search_fields = ('title', 'body', 'author__username')
     prepopulated_fields = {'slug': ('title',)}
     raw_id_fields = ('author',)
     date_hierarchy = 'publish'
-    ordering = ('status', 'publish')
+    ordering = ('status', '-publish')
     actions = [reject_selected, pend_selected,
                publish_selected, remove_editor, editor, trend]
 
@@ -55,7 +57,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     search_fields = ('body', 'user', 'article',)
-    list_display = ('user', 'article', 'created', 'active')
+    list_display = ('user', 'body','article', 'created', 'active')
     list_filter = ('created', 'active')
 
 
@@ -72,3 +74,4 @@ class SusAdmin(admin.ModelAdmin):
 @admin.register(Advertise)
 class AdsAdmin(admin.ModelAdmin):
     search_fields = ('link','desc')
+

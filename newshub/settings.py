@@ -25,10 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9kumj=)%-i6z6lw#e0wgp@sc%y=nyu)#hm14n)gyi=x38$4l#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =False
+DEBUG = False
 
 ALLOWED_HOSTS = ['www.moremehub.com', 'moremehub.com']
-#ALLOWED_HOSTS = ['*']
+
 
 SITE_ID = 1
 # Application definition
@@ -47,55 +47,17 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'actions.apps.ActionsConfig',
     'tagging',
-    'ckeditor',
-    'ckeditor_uploader',
     'sorl.thumbnail',
     'pwa',
+    'ckeditor',
+    'ckeditor_uploader',
+    'django_summernote',
+    'storages',
+
+
 ]
 
-CKEDITOR_UPLOAD_PATH = 'post_images/'
-CKEDITOR_CONFIGS = {
-    'default':{
-        'toolbar': 'Custom',
-        'height': '600px',
-        'width': '100%',
-         'contentsCss': 'img {max-width: 100%;height: auto !important;}',
-         'toolbar_Custom': [
-            ['Bold', 'Image'],
-            ['Link', 'Unlink', 'Anchor'],
-            ['Undo', 'Redo', ], ['Styles', 'Format',
-                                 'Italic', 'Underline', 'SpellChecker'],
-            ['Flash', 'Table', 'HorizontalRule', ],
-            ['Smiley', 'SpecialChar'],
-            ['BGColor', 'TextColor', 'Source'], ['NumberedList', 'BulletedList',
-                                                 'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight']
-                                                 ],
-    },
-    'special': {
-        'toolbar': 'Special',
-        'height': '600px',
-        'width': '100%',
 
-        'contentsCss': 'img {max-width: 100%;height: auto !important;}',
-        'toolbar_Special': [
-            ['Bold', 'Youtube', 'Image'],
-            ['Wordcount', 'Notification'],
-            ['Link', 'Unlink', 'Anchor'],
-            ['Undo', 'Redo', ], ['Styles', 'Format',
-                                 'Italic', 'Underline', 'SpellChecker'],
-            ['Flash', 'Table', 'HorinzontalRule', ],
-            ['Smiley', 'SpecialChar'],
-            ['BGColor', 'TextColor', 'Source'], ['NumberedList', 'BulletedList',
-                                                 'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight']
-
-        ],
-        'extraPlugins': ','.join(['youtube', 'image2', 'wordcount', 'notification']), 'allowedContent': True, 'removePlugins': 'iframe',
-
-    }
-}
-
-CKEDITOR_ALLOW_NONIMAGE_FILES = False
-CKEDITOR_RESTRICT_BY_USER = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -184,7 +146,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
+"""
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
@@ -193,8 +155,14 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+"""
+
+X_FRAME_OPTIONS = 'ALLOWALL'
+XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
+
 
 ##TAGGING CONFIGURATION##
 FORCE_LOWERCASE_TAGS = True
@@ -256,3 +224,81 @@ PWA_APP_SPLASH_SCREEN = [
 ]
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
+
+CKEDITOR_UPLOAD_PATH = 'post_images/'
+CKEDITOR_CONFIGS = {
+    'default':{
+        'toolbar': 'Custom',
+        'height': '600px',
+        'width': '100%',
+         'contentsCss': 'img {max-width: 100%;height: auto !important;}',
+         'toolbar_Custom': [
+            ['Bold', 'Image'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Undo', 'Redo', ], ['Styles', 'Format',
+                                 'Italic', 'Underline', 'SpellChecker'],
+            ['Flash', 'Table', 'HorizontalRule', ],
+            ['Smiley', 'SpecialChar'],
+            ['BGColor', 'TextColor', 'Source'], ['NumberedList', 'BulletedList',
+                                                 'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight']
+                                                 ],
+    },
+    'special': {
+        'toolbar': 'Special',
+        'height': '600px',
+        'width': '100%',
+
+        'contentsCss': 'img {max-width: 100%;height: auto !important;}',
+        'toolbar_Special': [
+            ['Bold', 'Youtube', 'Image'],
+            ['Wordcount', 'Notification'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Undo', 'Redo', ], ['Styles', 'Format',
+                                 'Italic', 'Underline', 'SpellChecker'],
+            ['Flash', 'Table', 'HorinzontalRule', ],
+            ['Smiley', 'SpecialChar'],
+            ['BGColor', 'TextColor', 'Source'], ['NumberedList', 'BulletedList',
+                                                 'Outdent', 'Indent', 'JustifyCenter', 'JustifyLeft', 'JustifyRight']
+
+        ],
+        'extraPlugins': ','.join(['youtube', 'image2', 'wordcount', 'notification']), 'allowedContent': True, 'removePlugins': 'iframe',
+
+    }
+}
+
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+CKEDITOR_RESTRICT_BY_USER = True
+
+
+SUMMERNOTE_CONFIG = {
+    'width': '100%',
+    'height': '480',
+    'toolbar': [
+        ['style', ['style']],
+        ['font', ['bold', 'italic',]],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+
+        ['insert', ['link', 'picture', 'video',]],
+        ['view', ['codeview']],
+        ['help', ['help']],
+        ],
+
+    'attachment_filesize_limit': 10240 * 10240, # specify the file size
+}
+
+AWS_ACCESS_KEY_ID = 'AKIAZI4G35WDQHULEV7Q'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'darphiz'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'newshub.storage_backends.MediaStorage'

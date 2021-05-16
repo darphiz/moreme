@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from account.form import UserForm, CreatorProfileForm, ProfileForm
@@ -189,18 +190,28 @@ def dashboard(request, action):
     if action == 'money':
         money = True
         y = []
+        z =[]
         month_articles = acl.filter(created__gte=timezone.now().replace(
             day=1, hour=0, minute=0, second=0, microsecond=0))
+        this_month = timezone.now().replace(
+            day=1, hour=0, minute=0, second=0, microsecond=0)
+        last_month = this_month - timedelta(days = 30)
+        last_month_articles = acl.filter(created__range=[last_month,this_month])
+        last_ppc = last_month_articles.filter(article_type='ppc')
+        for article in last_ppc:
+            x = article.get_clicks()
+            z.append(x)
+        last_ppc_revenue = float(sum(z) * 0.06)
+        last_ppa_revenue = last_month_articles.filter(article_type='ppa').count() * 500
+        last_month_revenue = last_ppc_revenue + last_ppa_revenue
         ppc_articles = month_articles.filter(article_type='ppc')
         for article in ppc_articles:
             x = article.get_clicks()
             y.append(x)
         ppc_revenue = float(sum(y) * 0.06)
         ppa_revenue = month_articles.filter(article_type='ppa').count() * 500
-        total_revenue =format( ppc_revenue + ppa_revenue, '.2f')  #format to two decimal place
-        ppc_revenue = format( ppc_revenue, '.2f')  #format to two decimal place
-        ppa_revenue = format( ppa_revenue, '.2f') #format to two decimal place
-        context = {'articles': articles, 'money': money,
+        total_revenue = ppc_revenue + ppa_revenue
+        context = {'last_month_revenue':last_month_revenue,'articles': articles, 'money': money,
                    'month_articles': month_articles, 'ppa_revenue': ppa_revenue, 'ppc_revenue': ppc_revenue, 'total_revenue': total_revenue}
     if action == 'account':
         account = True

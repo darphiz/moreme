@@ -7,13 +7,12 @@ from tagging.fields import TagField
 from random import randint
 from django.db import models
 from django.urls import reverse
-from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
 from django.db.models import Q
 from datetime import timedelta
 from django.utils.timezone import now
 import re
-# Create your models here.
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class CategoryManager(models.Manager):
@@ -148,11 +147,7 @@ class Article(models.Model):
     slug = models.SlugField(max_length=250, unique=True, blank=True, null=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='author', blank=True, null=True)
-    body = RichTextUploadingField(config_name='special', external_plugin_resources=[(
-        'youtube',
-        '/static/vendor/ckeditor_plugins/youtube/',
-        'plugin.js',
-        ),('wordcount','/static/vendor/ckeditor_plugins/wordcount/','plugin.js',),('notification','/static/vendor/ckeditor_plugins/notification/','plugin.js'),])
+    body = models.TextField()
     tag = TagField()
     image_upload = models.ImageField(upload_to="pics")
     category = models.ForeignKey(

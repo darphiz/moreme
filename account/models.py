@@ -6,7 +6,7 @@ from articles.models import Category
 from django.core.mail import send_mail, BadHeaderError, EmailMessage
 from django.conf import settings
 from django.http import HttpResponse
-from ckeditor_uploader.fields import RichTextUploadingField
+
 
 class AccountManager(models.Manager):
     def get_queryset(self):
@@ -87,7 +87,7 @@ class BulkMail(models.Model):
         ('tam','To All Members')
     )
     subject = models.CharField(max_length=150, default="Moreme Hub")
-    message = RichTextUploadingField(config_name='default', blank=True, null =True)
+    message = models.TextField(default="Moreme Hub")
     type = models.CharField(max_length=10, null=True, blank=True,
                                     choices=MAIL_TYPE, default=MAIL_TYPE[0][0])
     already_sent = models.BooleanField(default=False)

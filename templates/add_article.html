@@ -25,6 +25,14 @@
         margin: auto;
         margin-top: 15px;
     }
+    iframe.note-fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw!important;
+      height: 100vh!important;
+      z-index: 4000;
+    }
 </style>
 
 <div class="container border-top p-3">
@@ -32,8 +40,7 @@
         {% csrf_token %}
 
         <!--CKeditor Script-->
-        <script type="text/javascript" src="/static/ckeditor/ckeditor-init.js" data-ckeditor-basepath="/static/ckeditor/ckeditor/" id="ckeditor-init-script"></script>
-        <script type="text/javascript" src="/static/ckeditor/ckeditor/ckeditor.js"></script>
+
         {{form.non_field_errors }}
         {{form.field.errors }}
         <div class="form-group">
@@ -48,13 +55,14 @@
 
         <div class="form-group">
             <label for="id_body">Body:</label>
-            <div class="django-ckeditor-widget" data-field-id="id_body">
+            {{ form.body.errors }}
+            <textarea name="body" cols="40" rows="10" id="id_body" hidden="true">
                 {% if form.body.value %}
-                <textarea cols="40" id="id_body" name="body" rows="10" required data-processed="0" data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;Special&quot;, &quot;height&quot;: &quot;600px&quot;, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;contentsCss&quot;: &quot;img {max-width: 100%;height: auto !important;}&quot;, &quot;toolbar_Special&quot;: [[&quot;Bold&quot;, &quot;Youtube&quot;, &quot;Image&quot;],[&quot;Wordcount&quot;, &quot;Notification&quot;], [&quot;Link&quot;], [&quot;Undo&quot;, &quot;Redo&quot;]], &quot;extraPlugins&quot;: &quot;youtube,image2,wordcount,notification&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload/&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse/&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[[&quot;youtube&quot;, &quot;/static/vendor/ckeditor_plugins/youtube/&quot;, &quot;plugin.js&quot;],[&quot;wordcount&quot;, &quot;/static/vendor/ckeditor_plugins/wordcount/&quot;, &quot;plugin.js&quot;], [&quot;notification&quot;, &quot;/static/vendor/ckeditor_plugins/notification/&quot;, &quot;plugin.js&quot;]]" data-id="id_body" data-type="ckeditortype">{{form.body.value}}</textarea>
-                {% else %}
-                <textarea cols="40" id="id_body" name="body" rows="10" required data-processed="0" data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;Special&quot;, &quot;height&quot;: &quot;600px&quot;, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;contentsCss&quot;: &quot;img {max-width: 100%;height: auto !important;}&quot;, &quot;toolbar_Special&quot;: [[&quot;Bold&quot;, &quot;Youtube&quot;, &quot;Image&quot;],[&quot;Wordcount&quot;, &quot;Notification&quot;], [&quot;Link&quot;], [&quot;Undo&quot;, &quot;Redo&quot;]], &quot;extraPlugins&quot;: &quot;youtube,image2,wordcount,notification&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload/&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse/&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[[&quot;youtube&quot;, &quot;/static/vendor/ckeditor_plugins/youtube/&quot;, &quot;plugin.js&quot;],[&quot;wordcount&quot;, &quot;/static/vendor/ckeditor_plugins/wordcount/&quot;, &quot;plugin.js&quot;], [&quot;notification&quot;, &quot;/static/vendor/ckeditor_plugins/notification/&quot;, &quot;plugin.js&quot;]]" data-id="id_body" data-type="ckeditortype"></textarea>
+                    {{form.body.value}}
                 {% endif %}
-                {{ form.body.errors }}
+            </textarea>
+            <div class="summernote-div"  cols="40" rows="10" width="100%" height="500">
+                <iframe id="id_body_iframe" src="/summernote/editor/id_body/" frameborder="0" width="100%" height="500"></iframe>
             </div>
         </div>
         <div class="form-group">
@@ -81,11 +89,8 @@
         <div class="form-group">
         <label for="id_article_type">Revenue type:</label>
         <select class="form-control" name="article_type" id="id_article_type">
-            <option value="">---------</option>
-            <option value="ppa">PPA (revenue will be paid once irrespective of the click)</option>
-            <option value="ppc">PPC (revenue will be paid per click accumulated)</option>
-          
-          </select>
+            <option value="ppc" selected>PPC (revenue will be paid per click accumulated)</option>
+        </select>
         </div>
         <div class="form-group">
             <div class="img-preview">
@@ -113,10 +118,12 @@
             {% endif %}
             {% endif %}
         </div>
-      
+
     </form>
 </div>
-
+<script>
+    var settings_id_body = {"width": "100%", "height": 480, "lang": "en-US", "toolbar": [["style", ["style"]], ["font", ["bold", "italic"]], ["para", ["ul", "ol", "paragraph"]], ["height", ["height"]], ["insert", ["link", "picture", "video"]], ["view", ["codeview"]], ["help", ["help"]]], "url": {"language": "/static/summernote/lang/summernote-en-US.min.js", "upload_attachment": "/summernote/upload_attachment/"}};
+</script>
 <script type="text/javascript">
     function PreviewImage(event){
         var output = document.getElementById('img_preview');
