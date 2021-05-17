@@ -175,12 +175,7 @@ ABSOLUTE_URL_OVERRIDES = {
 
 LOGIN_URL = 'login'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mail.moremehub@gmail.com'
-EMAIL_HOST_PASSWORD = '@18061999Ayo'
+
 
 PWA_APP_NAME = 'MoremeHub App'
 PWA_APP_DESCRIPTION = "Never miss any interesting article on Moremehub Again!"
@@ -287,18 +282,15 @@ SUMMERNOTE_CONFIG = {
     'attachment_filesize_limit': 10240 * 10240, # specify the file size
 }
 
-AWS_ACCESS_KEY_ID = 'AKIAZI4G35WDQHULEV7Q'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'darphiz'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_LOCATION = 'static'
 
+AWS_LOCATION = 'static'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+AWS_DEFAULT_ACL = 'public-read'
+# Turn off query auth, although not sure this is needed.
+AWS_QUERYSTRING_AUTH = False
+# ... same as above
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'newshub.storage_backends.MediaStorage'
