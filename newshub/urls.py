@@ -23,7 +23,7 @@ from ckeditor_uploader import views as ckeditor_views
 from django.contrib.sitemaps.views import sitemap
 from articles.sitemaps import ArticleSitemap
 from django.conf.urls import handler404, handler500
-from django.conf.urls import url
+
 sitemaps = {
     'articles': ArticleSitemap,
 }
@@ -31,7 +31,7 @@ urlpatterns = [
 
     path('admin_moreme_1806/', admin.site.urls),
     path('', include('articles.urls')),
-    url('', include('pwa.urls')),
+    # path('', include('pwa.urls')),
     path('summernote/', include('django_summernote.urls')),
     path('account/', include('account.urls')),
     path('news_recommendation/', include('news_recommendation.urls')),
@@ -41,15 +41,11 @@ urlpatterns = [
          name='ckeditor_browse'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),
-
-
-
 ]
-"""
-urlpatterns = urlpatterns +
-    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-"""
 
 handler404 = 'articles.views.handler404'
 handler500 = 'articles.views.handler500'

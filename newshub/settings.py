@@ -9,10 +9,17 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+"""
+Fixing Legacy Codes
+"""
 import os
 from django.urls import reverse_lazy
-
+import django
+from django.utils.encoding import smart_str, force_str
+from django.utils.translation import gettext_lazy
+django.utils.translation.ugettext_lazy = gettext_lazy
+django.utils.encoding.smart_text = smart_str
+django.utils.encoding.force_text = force_str
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,9 +32,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9kumj=)%-i6z6lw#e0wgp@sc%y=nyu)#hm14n)gyi=x38$4l#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['www.moremehub.com', 'moremehub.com']
+ALLOWED_HOSTS = ['*']
 
 
 SITE_ID = 1
@@ -48,7 +55,6 @@ INSTALLED_APPS = [
     'actions.apps.ActionsConfig',
     'tagging',
     'sorl.thumbnail',
-    'pwa',
     'ckeditor',
     'ckeditor_uploader',
     'django_summernote',
@@ -91,7 +97,7 @@ WSGI_APPLICATION = 'newshub.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -101,6 +107,7 @@ DATABASES = {
         'HOST': 'moreme.mysql.pythonanywhere-services.com',
 
     }
+
 }
 """
 
@@ -110,7 +117,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-"""
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -146,7 +153,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-"""
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
@@ -158,7 +165,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-"""
+
 
 X_FRAME_OPTIONS = 'ALLOWALL'
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
@@ -177,48 +184,48 @@ LOGIN_URL = 'login'
 
 
 
-PWA_APP_NAME = 'MoremeHub App'
-PWA_APP_DESCRIPTION = "Never miss any interesting article on Moremehub Again!"
-PWA_APP_THEME_COLOR = '#FFFAFA'
-PWA_APP_BACKGROUND_COLOR = '#20B0E9'
-PWA_APP_DISPLAY = 'standalone'
-PWA_APP_START_URL = '/'
-PWA_APP_ICONS = [
-    {
-        'src': '/static/images/moreme_logo160.png',
-        'sizes': '160x160',
-        'type': 'image/png'
-    },{
-    'src':'statics/images/moreme_logo192.png',
-    'sizes':'192x192',
-    'purpose': 'any maskable',
-    'type': 'image/png'
-    },
-{
-    'src':'statics/images/moreme_logo512.png',
-    'sizes':'512x512',
-    'type': 'image/png'
-}
+# PWA_APP_NAME = 'MoremeHub App'
+# PWA_APP_DESCRIPTION = "Never miss any interesting article on Moremehub Again!"
+# PWA_APP_THEME_COLOR = '#FFFAFA'
+# PWA_APP_BACKGROUND_COLOR = '#20B0E9'
+# PWA_APP_DISPLAY = 'standalone'
+# PWA_APP_START_URL = '/'
+# PWA_APP_ICONS = [
+#     {
+#         'src': '/static/images/moreme_logo160.png',
+#         'sizes': '160x160',
+#         'type': 'image/png'
+#     },{
+#     'src':'statics/images/moreme_logo192.png',
+#     'sizes':'192x192',
+#     'purpose': 'any maskable',
+#     'type': 'image/png'
+#     },
+# {
+#     'src':'statics/images/moreme_logo512.png',
+#     'sizes':'512x512',
+#     'type': 'image/png'
+# }
 
-]
+# ]
 
-PWA_APP_SCOPE = '/'
-PWA_APP_ORIENTATION = 'any'
-PWA_APP_STATUS_BAR_COLOR = 'default'
-PWA_APP_ICONS_APPLE = [
-    {
-        'src': 'static/images/moreme_logo.jpg',
-        'sizes': '160x160'
-    }
-]
-PWA_APP_SPLASH_SCREEN = [
-    {
-        'src': 'static/images/moreme_logo630.png',
-        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
-    }
-]
-PWA_APP_DIR = 'ltr'
-PWA_APP_LANG = 'en-US'
+# PWA_APP_SCOPE = '/'
+# PWA_APP_ORIENTATION = 'any'
+# PWA_APP_STATUS_BAR_COLOR = 'default'
+# PWA_APP_ICONS_APPLE = [
+#     {
+#         'src': 'static/images/moreme_logo.jpg',
+#         'sizes': '160x160'
+#     }
+# ]
+# PWA_APP_SPLASH_SCREEN = [
+#     {
+#         'src': 'static/images/moreme_logo630.png',
+#         'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+#     }
+# ]
+# PWA_APP_DIR = 'ltr'
+# PWA_APP_LANG = 'en-US'
 
 CKEDITOR_UPLOAD_PATH = 'post_images/'
 CKEDITOR_CONFIGS = {
@@ -282,15 +289,16 @@ SUMMERNOTE_CONFIG = {
     'attachment_filesize_limit': 10240 * 10240, # specify the file size
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AWS_LOCATION = 'static'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-AWS_DEFAULT_ACL = 'public-read'
-# Turn off query auth, although not sure this is needed.
-AWS_QUERYSTRING_AUTH = False
-# ... same as above
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'newshub.storage_backends.MediaStorage'
+# AWS_LOCATION = 'static'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
+# AWS_DEFAULT_ACL = 'public-read'
+# # Turn off query auth, although not sure this is needed.
+# AWS_QUERYSTRING_AUTH = False
+# # ... same as above
+# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'newshub.storage_backends.MediaStorage'

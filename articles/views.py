@@ -183,6 +183,8 @@ def article_like(request):
                 pass
     return JsonResponse({'status': 'ko'})
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 def query(request, action, arg):
     ajax_here = True
@@ -229,13 +231,13 @@ def query(request, action, arg):
         # If page is not an integer deliver the first page
         results = paginator.page(1)
     except EmptyPage:
-        if request.is_ajax():
+        if is_ajax(request):
             # If the request is AJAX and the page is out of range
             #   return an empty page
             return HttpResponse('')
             # If page is out of range deliver last page of results
         images = paginator.page(paginator.num_pages)
-    if request.is_ajax():
+    if is_ajax(request):
         return render(request, 'query_ajax.html', {"action": action, "results": results, "arg": arg, "ajax_here": ajax_here})
 
     return render(request, 'query.html', {"action": action, "results": results, "arg": arg, "ajax_here": ajax_here})
